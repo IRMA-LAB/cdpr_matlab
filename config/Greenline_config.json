@@ -1,0 +1,219 @@
+{
+  "rotation_parametrization": "TILT_TORSION",
+  "cable": [
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [-0.001],[0.01196],[0]
+       
+      ],
+      "pos_A_loc": [
+        [-0.1299],[0.075],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [0.001],[0.01196],[0]
+       
+      ],
+      "pos_A_loc": [
+        [0.1299],[0.075],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [0.01086],[-0.00511],[0]
+       
+      ],
+      "pos_A_loc": [
+        [0.1299],[0.075],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [0.00986],[-0.00685],[0]
+       
+      ],
+      "pos_A_loc": [
+        [0],[-0.15],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [-0.00986],[-0.00685],[0]
+       
+      ],
+      "pos_A_loc": [
+        [0],[-0.15],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+    {
+      "swivel_pulley_encoder_res": 0,
+      "motor_cable_tau": 0,
+      "l0": 1,
+     "pos_D_glob": [
+        [-0.01086],[-0.00511],[0]
+       
+      ],
+      "pos_A_loc": [
+        [-0.1299],[0.075],[-0.005]
+      ],
+      "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+      "vers_j": [
+        [0],
+        [1],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [0],
+        [1]
+      ],
+      "swivel_pulley_r": 0,
+      "motor_encoder_res": 0
+    },
+  ],
+  "platform": {
+    "ext_moments_loc": [
+      [0],
+      [0],
+      [0]
+    ],
+    "mass": 0.3,
+    "grav_ax": [
+      [0],
+      [0],
+      [1]
+    ],
+    "inertia_mat_G_loc": [
+      [
+        0.137103501707891,
+        0.00197210741078711,
+        0.00676230798678740
+      ],
+      [
+        0.00197210741078711,
+        0.126579635308872,
+        0.00227526433982015
+      ],
+      [
+        0.00676230798678740,
+        0.00227526433982015,
+        0.221805498058557
+      ]
+    ],
+    "pos_G_loc": [
+      [0],
+      [0],
+      [0]
+    ],
+    "ext_force_loc": [
+      [0],
+      [0],
+      [0]
+    ]
+  }
+}
