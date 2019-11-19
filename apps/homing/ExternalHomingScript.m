@@ -3,7 +3,7 @@ clc
 addpath('Common')
 
 [cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_copt.json","homing");
+  LoadConfigAndInit("my_config_calib_mod.json.json","homing");
 
 reference_position = cdpr_parameters.workspace_center-[0;0;1.5];
  geometric_static_mask = [1;1;1;0;0;0];

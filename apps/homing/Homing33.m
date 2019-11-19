@@ -1,14 +1,22 @@
 clear all
+close all
 clc
-addpath('Common')
+addpath('../../config')
+addpath('../../data/workspace_files')
+addpath('../../libs/cdpr_model')
+addpath('../../libs/export_utilities')
+addpath('../../libs/numeric')
+addpath('../../libs/orientation_geometry')
+addpath('../../libs/under_actuated')
+folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_copt.json","homing33");
+  LoadConfigAndInit("my_config_calib_mod.json.json","homing33");
 
 % % Generation of the "roughly" estimated home pose
  reference_position = cdpr_parameters.workspace_center-[0.312;0.256;1.5];
- geometric_static_mask = [1;1;1;0;0;0];
-reference_angle = fsolve(@(v) CalcGeneriGeometcricStatic(...
+ 
+ reference_angle = fsolve(@(v) CalcGeneriGeometcricStatic(...
     cdpr_parameters,record,reference_position,v,geometric_static_mask),...
     zeros(cdpr_parameters.pose_dim-cdpr_parameters.n_cables,1),utilities.fsolve_options);
 cdpr_variables = UpdateIKZeroOrd(reference_position,reference_angle,cdpr_parameters,cdpr_variables);

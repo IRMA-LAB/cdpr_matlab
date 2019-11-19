@@ -27,6 +27,7 @@ classdef RecordType
                     limits(:,i) = par.cable(i,1).pos_A_loc;
                 end
             end
+            hold on
             max_x = max(limits(1,:)); min_x = min(limits(1,:)); incr_x = 0.2*(max_x - min_x);
             lim_x = [((min_x-incr_x)*10) ((max_x+incr_x)*10)]./10; l_x = (lim_x(2)-lim_x(1)); tickSpace_x = l_x/10;
             max_y = max(limits(2,:)); min_y = min(limits(2,:)); incr_y = 0.2*(max_y - min_y);
@@ -56,6 +57,21 @@ classdef RecordType
             obj.axes_handle.CameraPosition = [-2.837916634960155,-22.911510361523757,13.494156116891816];
             %obj.axes_handle.CameraTarget = [-0.913362548387552,0.616539044482742,-0.747766910811659];
             %obj.axes_handle.CameraViewAngle = 9.3176;
+        end
+        function obj = ResetFigureLimits(obj,limits,spacing)
+            
+            obj.axes_handle.XLim = limits(1,:);
+            obj.axes_handle.YLim = limits(2,:);
+            obj.axes_handle.ZLim = limits(3,:);
+            obj.axes_handle.XTick = limits(1,1):(limits(1,2)-limits(1,1))/spacing:limits(1,2); 
+            obj.axes_handle.YTick = limits(2,1):(limits(2,2)-limits(2,1))/spacing:limits(2,2); 
+            obj.axes_handle.ZTick = limits(3,1):(limits(3,2)-limits(3,1))/spacing:limits(3,2);   
+            
+            obj.axes_handle.DataAspectRatioMode = 'manual';
+            obj.axes_handle.DataAspectRatio= [1;1;1];
+            
+            obj.axes_handle.CameraPosition = [-2.837916634960155,-22.911510361523757,13.494156116891816];
+        
         end
         function frame = SetFrame(obj,cdpr_v,cdpr_p)
             for i=1:obj.n_cables

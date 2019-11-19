@@ -1,58 +1,21 @@
-function out = CalcWorkspace(cdpr_p,cdpr_v,out,ut,type,set_point,rec)
-close all  
-opt = optimoptions('linprog');
-opt.Display = 'off';
+function out = CalcWorkspace(cdpr_p,cdpr_v,ut,type,tau_limits,folder,rec,varargin)
+
+n_arg_opt = length(varargin);
+
+if (n_arg_opt>0)
+      add_wp_info =  varargin{1};
+end
+
 if (type == 1) % translational
   
-  cfr_arc_min = 0.02;
-  z_step = 0.02;
-  r_step = 0.02;
-  counter = 0;
   if (cdpr_p.n_cables <6) % underactuated
-  gStat_mask = [1;1;1;0;0;0];
-  start_idx = 1;
-  hold on
-  for z = 0.1:-z_step:-1.5
-    in_guess = [0;0;0];
-    for r = 0:r_step:1.5
-      cfr = 2*pi*r;
-      steps = ceil(cfr./cfr_arc_min);
-      for ang =0:2*pi/steps:2*pi*(1-1./steps)
-        
-        p = cdpr_p.workspace_center+[r*cos(ang);r*sin(ang);z];
-        %tic
-        or = fsolve(@(v) CalcWPGeometricStatic(cdpr_p,p,v,gStat_mask),...
-        in_guess,ut.fsolve_options_grad);
-        %toc
-        in_guess = or;
-        pose = [p;or];
-        cdpr_v = UpdateIKZeroOrd(pose(1:3,1),pose(4:end,1),cdpr_p,cdpr_v);
-        cdpr_v = CalcExternalLoadsStateSpace(cdpr_v,cdpr_p,eye(3));
-        cdpr_v = CalcCablesTensionStat(cdpr_v);
-        check1 = ~any(isnan(cdpr_v.tension_vector./cdpr_p.platform.mass)); 
-        if (check1)
-          check2 = ~(any(cdpr_v.tension_vector./cdpr_p.platform.mass < 2) || any(cdpr_v.tension_vector./cdpr_p.platform.mass > 10));
-          if (check2) 
-            counter = counter + 1;
-            out.pose_WP(:,counter) = pose;
-            out.manip(1,counter) = sqrt(det(cdpr_v.geometric_jacobian'*cdpr_v.geometric_jacobia));
-            out.netZ_tension_vector_WP(:,counter) = cdpr_v.tension_vector./cdpr_p.platform.mass;
-          end
-        end
-      end
-    end
-    tMax = max(out.netZ_tension_vector_WP(:,start_idx:counter));
-    %[ss,s_i] = sort(tMax);
-    [ss,s_i] = sort(out.manip);
-    xx = out.pose_WP(1,start_idx:counter);
-    yy = out.pose_WP(2,start_idx:counter);
-    zz = out.pose_WP(3,start_idx:counter);
-    cmap = jet(length(xx));
-    scatter3(xx(s_i),yy(s_i),zz(s_i),10,cmap,'filled')
-    start_idx = counter;
-  end
-  hold off
-  
+      
+      out = CalcWorkspaceUnder33(cdpr_p,cdpr_v,ut,tau_limits,add_wp_info);
+      rec = rec.ResetFigureLimits(out.limits,10);
+      plot_handle = DisplayAndSaveWorkspace(out,0,folder,rec);
+      delete(plot_handle);
+      plot_handle = DisplayAndSaveWorkspace(out,1,folder,rec);
+      delete(plot_handle);
     
   elseif (cdpr_p.n_cables >6) % overactuated
     
@@ -65,6 +28,17 @@ else  % orientational
   counter = 0;
   if (cdpr_p.n_cables <6) % underactuated
   
+    tau_max = max(out.tension_vector);
+    tau_min = min(out.tension_vector);
+    [~,sort_max_ind] = sort(tau_max);
+    [~,sort_min_ind] = sort(tau_min);
+    x = out.pose(1,:);
+    y = out.pose(2,:);
+    z = out.pose(3,:);
+    cmap = jet(length(tau_max));
+    scatter3(rec.axes_handle,x(sort_max_ind),y(sort_max_ind),z(sort_max_ind),10,cmap,'filled')
+    scatter3(x(sort_min_ind),y(sort_min_ind),z(sort_min_ind),10,cmap,'filled')
+
   elseif (cdpr_p.n_cables >6) % overactuated
     
   else % completely actuated

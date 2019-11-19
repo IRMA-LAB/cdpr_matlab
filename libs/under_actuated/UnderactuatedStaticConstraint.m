@@ -6,7 +6,7 @@ cdpr_v = CalcCablesStaticTension(cdpr_v);
 
 for i=1:length(cdpr_v.cable)
     if (isnan(cdpr_v.tension_vector(i)))
-        constraint=NaN(length(constraint,1));
+        constraint=NaN(length(constraint),1);
         break
     end
 end

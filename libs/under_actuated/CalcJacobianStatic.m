@@ -12,7 +12,7 @@ for i=1:n
        [zeros(3) -Anti(pos_PA_glob)*cdpr_v.platform.H_mat]).*cdpr_v.tension_vector(i);
 end
 
-matrix = (-app_mat+cdpr_p.platform.mass.*[zeros(3,1);...
+matrix = (-app_mat+cdpr_p.platform.mass.*[zeros(3,3);...
     Anti(cdpr_p.platform.gravity_acceleration)*Anti(cdpr_p.platform.pos_PG_glob)*cdpr_v.platform.H_mat]);
 
 end
