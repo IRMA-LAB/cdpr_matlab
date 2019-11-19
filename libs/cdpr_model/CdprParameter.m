@@ -35,7 +35,9 @@ classdef CdprParameter
         cable(i,1) = CableParameters(p.cable(i));
         workspace_center = workspace_center + cable(i,1).pos_D_glob;
       end  
+      if (obj.n_cables<6)
       obj.underactuated_platform = UnderActuatedPar(obj.n_cables,obj.pose_dim);
+      end
       obj.workspace_center = workspace_center./3;
       obj.workspace_center(3) = 0;
       obj.cable = cable;

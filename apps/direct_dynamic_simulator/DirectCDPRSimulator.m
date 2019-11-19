@@ -1,21 +1,22 @@
 clear all
 close all
 clc
-addpath('../files_configuration')
-addpath('../files_workspace')
-addpath('../fun_cdpr_model')
-addpath('../fun_export_utilities')
-addpath('../fun_numeric')
-addpath('../fun_orientation_geometry')
-addpath('../fun_under_actuated')
+addpath('../../config')
+addpath('../../data/workspace_files')
+addpath('../../libs/cdpr_model')
+addpath('../../libs/export_utilities')
+addpath('../../libs/numeric')
+addpath('../../libs/orientation_geometry')
+addpath('../../libs/under_actuated')
+folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
   LoadConfigAndInit("my_config_calib_mod.json","DynamicPlanning"); 
 
-sym_result_name = 'C:\Users\EdoPortable\OneDrive - Alma Mater Studiorum Università di Bologna\Work\CableRobotCodes\Results\InverseRTR';
-traj(1) = load(strcat(sym_result_name,'1.mat'));
-traj(2) = load(strcat(sym_result_name,'2.mat'));
-traj(3) = load(strcat(sym_result_name,'3.mat'));
+traj_name = '..\..\data\planning_results\InverseRTR';
+traj(1) = load(strcat(traj_name,'1.mat'));
+traj(2) = load(strcat(traj_name,'2.mat'));
+traj(3) = load(strcat(traj_name,'3.mat'));
 
 [t,cables,p0] = JoinTrajectories(traj,cdpr_parameters.n_cables,utilities.t_interval);
 
@@ -40,22 +41,10 @@ for j=1:cdpr_parameters.n_cables
    spline_id.l_d2(j) = spline(t,cables(j).complete_acceleration);
    
 end
-
-% for j=1:cdpr_parameters.n_cables
-%    spline_real.l(j) = spline(t,l(j,:));
-%    spline_real.l_d(j) = spline(t,dl(j,:));
-%    spline_real.l_d2(j) = spline(t,ddl(j,:));
-%    
-% end
  
-%  tic
-%  sol_id = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics33(cdpr_parameters,...
+%  sol_real = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics(cdpr_parameters,...
 %         cdpr_variables,utilities,spline_id,time,state),...
 %         0:utilities.t_interval:t(end),p0);  
-%  t1 = toc
- 
- tic
- sol_real = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics33(cdpr_parameters,...
-        cdpr_variables,utilities,spline_id,time,state),...
-        0:utilities.t_interval:t(end),p0);  
- t2 = toc
+ sol_real_simp = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamicsSpeedInputUnder(cdpr_parameters,...
+        cdpr_variables,spline_id,time,state),...
+        0:utilities.t_interval:t(end),p0);     

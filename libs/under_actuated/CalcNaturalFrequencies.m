@@ -22,6 +22,6 @@ end
 [eigenvectors,eigenvalues_mat] = eig(D_matrix);
 
 matrix = eigenvectors;
-vector = diag(eigenvalues_mat);
+vector = sqrt(diag(eigenvalues_mat))./(2.*pi);
 
 end

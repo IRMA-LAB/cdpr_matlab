@@ -1,4 +1,4 @@
-function [vector,matrix] = FunDkStatL(r,cdpr_p,complete_length,cable_tensions,variables)
+function [vector,matrix] = FunDkStatL(cdpr_p,complete_length,cable_tensions,variables,varargin)
 
 cdpr_v = CdprVar(cdpr_p.n_cables);
 
@@ -11,6 +11,8 @@ l_jacobian = CalcJacobianL(cdpr_v);
 vector = [constraint_static;constraint_l];
 matrix = [static_jacobian;l_jacobian];
 
-r.SetFrame(cdpr_v,cdpr_p);
+if (~isempty(varargin))
+varargin{1}.SetFrame(cdpr_v,cdpr_p);
+end
 
 end

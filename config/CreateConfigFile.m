@@ -1,4 +1,4 @@
-%% CreateConfigFile
+% CreateConfigFile
 % The purpose of this script is to create the configuration file. The file  
 % extension is ".json", so it is necessary to download a software that
 % encode matlab object in json format.

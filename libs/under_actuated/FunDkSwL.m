@@ -1,4 +1,4 @@
-function [vector,matrix] = FunDkSwL(r,cdpr_p,complete_length,swivel_angles,variables)
+function [vector,matrix] = FunDkSwL(cdpr_p,complete_length,swivel_angles,variables,varargin)
 
 cdpr_v = CdprVar(cdpr_p.n_cables);
 sw_constraint = zeros(cdpr_p.n_cables,1);
@@ -12,6 +12,8 @@ sw_jacobian = CalcJacobianSw();
 vector = [sw_constraint;l_constraint];
 matrix = [sw_jacobian;l_jacobian];
 
-r.SetFrame(cdpr_v,cdpr_p);
+if (~isempty(varargin))
+varargin{1}.SetFrame(cdpr_v,cdpr_p);
+end
 
 end

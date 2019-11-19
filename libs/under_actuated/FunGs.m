@@ -1,4 +1,4 @@
-function [vector,matrix] = FunGs(r,cdpr_p,act_vars,un_act_vars)
+function [vector,matrix] = FunGs(cdpr_p,act_vars,un_act_vars,varargin)
 
 cdpr_v = CdprVar(cdpr_p.n_cables);
 
@@ -15,7 +15,9 @@ cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateGeometricJac
 matrix = CalcJacobianGs(cdpr_v,cdpr_p);
 matrix(:,cdpr_p.underactuated_platform.actuated_mask) = [];
 
-r.SetFrame(cdpr_v,cdpr_p);
+if (~isempty(varargin))
+varargin{1}.SetFrame(cdpr_v,cdpr_p);
+end
 
 
 
