@@ -11,15 +11,15 @@ addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
 folder = '../../data';
 
-[cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod.json","DynamicPlanning");
+[cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
+  LoadConfigAndInit("my_config_calib_mod","DynamicPlanning");
 
 % fare la cartella output per la roba enorme con dentro un .keep
 
 simulationData = struct();
 geometricFunction = @LineFunction;
 simulationData = NormalizedPoly7Coefficients(1,simulationData);
-simulationData = GetDestinations(simulationData,cdpr_parameters,record,utilities);
+simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,record,utilities);
   
 [outputDataRTR] = RestToRestCoefficients(cdpr_parameters,cdpr_variables,...
      simulationData,geometricFunction,utilities,record);

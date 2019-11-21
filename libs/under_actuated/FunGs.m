@@ -12,7 +12,7 @@ cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateGeometricJac
 
 [cdpr_v,vector] = UnderactuatedStaticConstraint(cdpr_v);
 
-matrix = CalcJacobianGs(cdpr_v,cdpr_p);
+matrix = CalcJacobianGs(cdpr_v);
 matrix(:,cdpr_p.underactuated_platform.actuated_mask) = [];
 
 if (~isempty(varargin))

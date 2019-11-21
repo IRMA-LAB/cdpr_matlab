@@ -13,8 +13,8 @@ folder = '../../data';
 % [cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
 %   LoadConfigAndInit("Greenline_config.json","DynamicPlanning");
 
-[cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod.json","calib_mod_WS");
+[cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
+  LoadConfigAndInit("my_config_calib_mod","calib_mod_WS");
 
 tension_limits = [10;1000];
 z_lim_inf = -1;

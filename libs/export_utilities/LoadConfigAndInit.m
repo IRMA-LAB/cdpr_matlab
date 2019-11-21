@@ -1,4 +1,4 @@
-function [parameters,variables,outputs,record,utilities] = ...
+function [parameters,variables, ws_data,outputs,record,utilities] = ...
     LoadConfigAndInit(config_name,simulation_title)
 %LOADCONFIGANDINIT performs basic initializations of the cdpr simulation.
 %   LOADCONFIGANDINIT needs the name of a .json configuration file in
@@ -21,7 +21,7 @@ function [parameters,variables,outputs,record,utilities] = ...
 
 
 
-parameters = CdprParameter(config_name);
+parameters = CdprParameter(strcat(config_name,'.json'));
 variables = CdprVar(parameters.n_cables);
 
 outputFieldsPlatform = fieldnames(variables.platform);
@@ -39,6 +39,15 @@ for j = 1:n_elem
 end
 outputs.index = [];
 record = RecordType(parameters,simulation_title);
+try
+    wp_name = strcat(config_name,'_WS.mat');
+    load(wp_name);
+    record = record.ResetFigureLimits(ws_data.limits,8);
+catch
+    ws_data = [];
+end
+    
+
 utilities = UtilitiesType;
 
 end

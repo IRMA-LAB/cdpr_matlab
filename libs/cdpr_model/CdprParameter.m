@@ -41,6 +41,20 @@ classdef CdprParameter
       obj.workspace_center = workspace_center./3;
       obj.workspace_center(3) = 0;
       obj.cable = cable;
-    end
+         end
+    function par = RotToPar(obj,mat)
+     switch (obj.rotation_parametrization)
+        case RotationParametrizations.EULER_ZYZ
+          par = Rot2ZYZ(mat,zeros(3,1));
+        case RotationParametrizations.TAYT_BRYAN
+          par = Rot2Tayt(mat,zeros(3,1));
+        case RotationParametrizations.RPY
+          par = Rot2RPY(mat,zeros(3,1));
+        case RotationParametrizations.TILT_TORSION
+          par = Rot2TT(mat,zeros(3,1));
+        case RotationParametrizations.QUATERNION
+          par = Rot2Quat(mat);
+      end
+  end
   end
 end

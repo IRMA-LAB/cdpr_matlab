@@ -10,8 +10,8 @@ addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
 folder = '../../data';
 
-[cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod.json","DynamicPlanning"); 
+[cdpr_parameters, cdpr_variables,ws_data, cdpr_outputs,record,utilities] = ...
+  LoadConfigAndInit("my_config_calib_mod","DynamicPlanning"); 
 
 traj_name = '..\..\data\planning_results\InverseRTR';
 traj(1) = load(strcat(traj_name,'1.mat'));

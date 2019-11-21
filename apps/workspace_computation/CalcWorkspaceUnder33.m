@@ -39,5 +39,6 @@ end
 
 out.limits = limits;
 out.workspace_center = mean(out.pose(1:3,:),2);
+out.parametrization = cdpr_p.rotation_parametrization;
 
 end
