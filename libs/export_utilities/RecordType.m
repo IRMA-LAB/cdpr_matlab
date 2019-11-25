@@ -7,9 +7,9 @@ classdef RecordType
         frame_vector;
     end
     methods
-        function obj = RecordType(par,title)
+        function obj = RecordType(par,title,name)
             obj.n_cables = par.n_cables;
-            obj = obj.SetFigureParameter(par,title);
+            obj = obj.SetFigureParameter(par,title,name);
             for i=1:obj.n_cables
                 obj.lines.pulley(i) = animatedline('Color','r','LineWidth',2);
                 obj.lines.cable(i) = animatedline('Color','k','LineWidth',2);
@@ -18,8 +18,8 @@ classdef RecordType
                 obj.lines.platformPlane(i) = animatedline('Color','b','LineWidth',1);
             end
         end
-        function obj = SetFigureParameter(obj,par,title)
-            obj.figure_handle = figure('Name',title,'NumberTitle','off','Position',[0 0 700 700]);
+        function obj = SetFigureParameter(obj,par,title,name)
+            obj.figure_handle = figure('Name',title,'FileName',name,'NumberTitle','off','Position',[0 0 700 700]);
             for i=1:par.n_cables
                 if (norm(par.cable(i,1).pos_D_glob)>norm(par.cable(i,1).pos_A_loc))
                     limits(:,i) = par.cable(i,1).pos_D_glob;

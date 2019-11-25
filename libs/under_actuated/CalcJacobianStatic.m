@@ -1,18 +1,17 @@
 function matrix = CalcJacobianStatic(cdpr_v)
 
-n = length(cdpr_v.cable); m = length(cdpr_v.analitic_jacobian);
-app_mat = zeros(6,m);
-J_sw = CalcJacobianSw(cdpr_v);
-J_tan = CalcJacobianTan(cdpr_v);
+n = length(cdpr_v.cable);  
+K = zeros(6);
+
 for i=1:n
-   dt =  sin(cdpr_v.cable(i).tan_ang).*cdpr_v.cable(i).vers_w*J_sw(i,:)+...
-       cdpr_v.cable(i).vers_n*J_tan(i,:);
-   app_mat(1:3,:) =  app_mat(1:3,:)+dt.*cdpr_v.tension_vector(i);
-   app_mat(4:6,:) = app_mat(4:6,:)+(Anti(pos_PA_glob)*dt-Anti(cdpr_v.cable(i).vers_t)*...
-       [zeros(3) -Anti(pos_PA_glob)*cdpr_v.platform.H_mat]).*cdpr_v.tension_vector(i);
+    T = CalcMatrixT(cdpr_v.cable(i));
+    a_tilde = Anti(cdpr_v.cable(i).pos_PA_glob);
+    K = K + cdpr_v.tension_vector(i).*[-T T*a_tilde;-a_tilde*T (a_tilde*T-Anti(cdpr_v.cable(i).vers_t))*a_tilde];
 end
 
-matrix = (-app_mat+cdpr_p.platform.mass.*[zeros(3,3);...
-    Anti(cdpr_p.platform.gravity_acceleration)*Anti(cdpr_p.platform.pos_PG_glob)*cdpr_v.platform.H_mat]);
+K(4:6,4:6) = K(4:6,4:6) + Anti(cdpr_v.platform.ext_load(1:3))*Anti(cdpr_v.platform.pos_PG_glob);
+matrix = K;
+
+matrix(:,4:end) = matrix(:,4:end)*cdpr_v.platform.H_mat;
 
 end

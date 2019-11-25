@@ -10,37 +10,36 @@ addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
 folder = '../../data';
 
-[cdpr_parameters, cdpr_variables, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod.json.json","homing33");
+[cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
+  LoadConfigAndInit("config_calib","HomingTest33");
 
 % % Generation of the "roughly" estimated home pose
- reference_position = cdpr_parameters.workspace_center-[0.312;0.256;1.5];
- 
- reference_angle = fsolve(@(v) CalcGeneriGeometcricStatic(...
-    cdpr_parameters,record,reference_position,v,geometric_static_mask),...
-    zeros(cdpr_parameters.pose_dim-cdpr_parameters.n_cables,1),utilities.fsolve_options);
+ reference_position = ws_parameters.workspace_center;
+ initial_guess = LookForCloseSolution(cdpr_parameters,ws_parameters,reference_position); 
+ reference_angle = fsolve(@(v) FunGs(cdpr_parameters,reference_position,v,record),...
+    initial_guess,utilities.fsolve_options_grad);
+
 cdpr_variables = UpdateIKZeroOrd(reference_position,reference_angle,cdpr_parameters,cdpr_variables);
-cdpr_variables = UpdateIKFirstOrd(zeros(3,1),zeros(3,1),...
-    cdpr_parameters,cdpr_variables);
-  cdpr_variables.ext_load = CalcExternalLoads(cdpr_parameters.platform,...
-    cdpr_variables.platform.rot_mat,cdpr_variables.platform.H_mat,cdpr_variables.platform.pos_PG_glob,eye(3));
-  cdpr_variables.tension_vector = CalcCablesTension(cdpr_variables);
+cdpr_variables = CalcExternalLoads(cdpr_variables,cdpr_parameters);
+cdpr_variables = CalcCablesStaticTension(cdpr_variables);
+
 for i=1:cdpr_parameters.n_cables
-  l0(i,1) = cdpr_variables.cable(i).length;
+  l0(i,1) = cdpr_variables.cable(i).complete_length;
   s0(i,1) = cdpr_variables.cable(i).swivel_ang;
 end
+
 p0 = cdpr_variables.platform.pose;
-start_pose = [reference_position; reference_angle];
+start_pose = p0;
 tension_module = 40;
-home_pose = fsolve(@(v) CalcPoseFromTensionModule(...
-    cdpr_parameters,record,tension_module,v),...
-    start_pose,utilities.fsolve_options);
-cdpr_variables = UpdateIKZeroOrd(home_pose(1:cdpr_parameters.n_cables),...
-  home_pose(cdpr_parameters.n_cables+1:cdpr_parameters.pose_dim),cdpr_parameters,cdpr_variables);
+home_pose = fsolve(@(v) FunDkStat(cdpr_parameters,tension_module.*ones(cdpr_parameters.n_cables,1),v,record),...
+    start_pose,utilities.fsolve_options_grad);
+cdpr_variables = UpdateIKZeroOrd(home_pose(1:3),...
+  home_pose(4:end),cdpr_parameters,cdpr_variables);
 for i=1:cdpr_parameters.n_cables
-  home_l(i,1) = cdpr_variables.cable(i).length;
+  home_l(i,1) = cdpr_variables.cable(i).complete_length;
   home_swivel_ang(i,1) = cdpr_variables.cable(i).swivel_ang;
 end
+
 tension_module_max = 60;
 % n_delta = 10; 
 % DT = (60-40)/n_delta;

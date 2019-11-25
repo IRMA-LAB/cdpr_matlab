@@ -38,7 +38,7 @@ for j = 1:n_elem
     end
 end
 outputs.index = [];
-record = RecordType(parameters,simulation_title);
+record = RecordType(parameters,simulation_title,config_name);
 try
     wp_name = strcat(config_name,'_WS.mat');
     load(wp_name);

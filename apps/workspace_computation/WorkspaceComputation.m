@@ -11,9 +11,9 @@ addpath('../../libs/under_actuated')
 folder = '../../data';
 
 
-workspace of grab underactuated prototype
+%workspace of grab underactuated prototype
 [cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod","calib_mod_WS");
+  LoadConfigAndInit("config_calib","calib_mod_WS");
 tension_limits = [10;1000];
 z_lim_inf = -1.5;
 cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
