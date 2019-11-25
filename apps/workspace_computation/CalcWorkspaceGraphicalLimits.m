@@ -1,25 +1,36 @@
-function limits = CalcWorkspaceGraphicalLimits(cdpr_p,varargin)
+function limits = CalcWorkspaceGraphicalLimits(cdpr_p,ws_data)
 
 lim_sup = [Inf;Inf;Inf];
 lim_inf = -[Inf;Inf;Inf];
-if (~isempty(varargin))
-    lim_inf(3,1) = varargin{1};
-end
-    
-for i=1:cdpr_p.n_cables
-    if i==1    
-        lim_sup = cdpr_p.cable(i).pos_D_glob;
-        lim_inf(1:2,1) = cdpr_p.cable(i).pos_D_glob(1:2,1);
-        if lim_inf(3,1)==-Inf
-            lim_inf(3,1) = cdpr_p.cable(i).pos_D_glob(3,1);
-        end
-    else
-        for j=1:3
-           if (cdpr_p.cable(i).pos_D_glob(j)>lim_sup(i))
-                lim_sup(j) = cdpr_p.cable(i).pos_D_glob(j);
-            elseif (cdpr_p.cable(i).pos_D_glob(i)<lim_inf(j))
-                lim_inf(j) = cdpr_p.cable(i).pos_D_glob(j);
-            end 
+
+cdpr_v = CdprVar(cdpr_p.n_cables);
+for k = 1: length(ws_data)
+    cdpr_v = UpdateIKZeroOrd(ws_data.pose(1:3,k),ws_data.pose(4:end,k),cdpr_p,cdpr_v);
+    for i=1:cdpr_p.n_cables
+        for l = 1:3
+            switch l
+                case 1
+                    point = cdpr_p.cable(i).pos_D_glob;
+                case 2
+                    point = cdpr_v.cable(i).pos_OA_glob;
+                case 3
+                    point = cdpr_v.platform.position;
+            end
+            if (i==1 && l==1)
+                lim_sup = point;
+                lim_inf = lim_sup;
+                
+            else
+                for j=1:3
+                    if (point(j)>lim_sup(j))
+                        lim_sup(j) = point(j);
+                    elseif (point(j)<lim_inf(j))
+                        lim_inf(j) = point(j);
+                    end
+                end
+            end
+            
+            
         end
     end
 end
