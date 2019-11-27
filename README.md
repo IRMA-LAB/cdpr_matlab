@@ -12,9 +12,11 @@ They are organized in folders, divided by their scope:
 ## Documentation
 
 Both MATLAB functions and scripts are documented in MATLAB documentation style.
+
 Most of the code is already documented, the rest is in development.
 
 ## Prerequisites
 
-All the function and scripts have been tested with _[MATLAB2018b](https://mathworks.com/downloads/web_downloads/download_release?release=R2018b)_
+All the function and scripts have been tested with _[MATLAB2018b](https://mathworks.com/downloads/web_downloads/download_release?release=R2018b)_.
+
 In order to run the applications, it is necessary to install this _[.json parser](https://github.com/kyamagu/matlab-json)_
