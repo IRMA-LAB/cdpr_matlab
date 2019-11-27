@@ -36,6 +36,7 @@ classdef PlatformVar
     pose_q_d;
     H_mat;%is a matrix (size[3,3]) that transforms the 1th order derivatives of rotation angles to angular velocity.
     
+    
     orientation_deriv_2;%is a vector (size[3,1], [rad/s^2]), containing the 2nd order time derivatives of angles of rotation.
     quaternion_deriv_2;%is a vector (size[3,1]), containing the 2nd order time derivatives of QUATERNION.
     pose_d_2;

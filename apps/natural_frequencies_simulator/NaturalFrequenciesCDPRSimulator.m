@@ -11,7 +11,7 @@ addpath('../../libs/under_actuated')
 folder = '../../data';
 
 [cdpr_parameters, cdpr_variables,ws_data, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("my_config_calib_mod","DynamicPlanning"); 
+  LoadConfigAndInit("config_calib","DynamicPlanning"); 
 
 index = randi(ws_data.counter);
 scale_fact_pos = 2; %max amplitude degree

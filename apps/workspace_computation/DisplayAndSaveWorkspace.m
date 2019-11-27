@@ -10,6 +10,9 @@ switch mode
         z = out.pose(3,:);
         cmap = jet(length(criteria));
         f = scatter3(x(criteria_ind),y(criteria_ind),z(criteria_ind),10,cmap,'filled');
+        h1=colorbar;
+        colormap(cmap)
+        caxis([min(criteria) max(criteria)])
         savefig(strcat(filename,'_max_tension','.fig'));
         ws_data = out;
         ws_data = rmfield(ws_data,'pose');
@@ -22,6 +25,9 @@ switch mode
         y = out.pose(2,:);
         z = out.pose(3,:);
         cmap = jet(length(criteria));
+        h1=colorbar;
+        colormap(cmap)
+        caxis([min(criteria) max(criteria)])
         f = scatter3(x(criteria_ind),y(criteria_ind),z(criteria_ind),10,cmap,'filled');
         savefig(strcat(filename,'_min_tension','.fig'));
         ws_data = out;
@@ -56,5 +62,6 @@ switch mode
         save(strcat(filename,'_WS','.mat'),'ws_data');
         close(f);
 end
+delete(h1)
 
 end

@@ -10,8 +10,6 @@ end
 D = [eye(3) zeros(3); zeros(3) cdpr_v.platform.H_mat];
 K(4:6,4:6) = K(4:6,4:6) + Anti(cdpr_v.platform.ext_load(1:3))*Anti(cdpr_v.platform.pos_PG_glob);
 matrix = -cdpr_v.underactuated_platform.geometric_orthogonal'*K*cdpr_v.underactuated_platform.geometric_orthogonal;
-matrix_an = -cdpr_v.underactuated_platform.analitic_orthogonal'*D'*K*D*cdpr_v.underactuated_platform.analitic_orthogonal;
 
 matrix = (matrix+matrix')./2;
-matrix_an = (matrix_an+matrix_an')./2;
 end
