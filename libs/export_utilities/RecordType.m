@@ -21,10 +21,10 @@ classdef RecordType
         function obj = SetFigureParameter(obj,par,title,name)
             obj.figure_handle = figure('Name',title,'FileName',name,'NumberTitle','off','Position',[0 0 700 700]);
             for i=1:par.n_cables
-                if (norm(par.cable(i,1).pos_D_glob)>norm(par.cable(i,1).pos_A_loc))
-                    limits(:,i) = par.cable(i,1).pos_D_glob;
+                if (norm(par.cable(i,1).pos_OD_glob)>norm(par.cable(i,1).pos_PA_loc))
+                    limits(:,i) = par.cable(i,1).pos_OD_glob;
                 else
-                    limits(:,i) = par.cable(i,1).pos_A_loc;
+                    limits(:,i) = par.cable(i,1).pos_PA_loc;
                 end
             end
             hold on
@@ -87,7 +87,7 @@ classdef RecordType
                 for j = 0:0.05:2*pi+0.05
                     vers_n_rot = cdpr_v.cable(i).vers_u*cos(j) +...
                         cdpr_p.cable(i).vers_k*sin(j);
-                    r = cdpr_p.cable(i).pos_D_glob+cdpr_p.cable(i).swivel_pulley_r*...
+                    r = cdpr_p.cable(i).pos_OD_glob+cdpr_p.cable(i).swivel_pulley_r*...
                         (cdpr_v.cable(i).vers_u+vers_n_rot);
                     addpoints(obj.lines.pulley(i),[r(1)],[r(2)],[r(3)]);
                 end
@@ -103,7 +103,7 @@ classdef RecordType
                     [cdpr_v.cable(i).pos_OA_glob(1) p(1,i)],...
                     [cdpr_v.cable(i).pos_OA_glob(2) p(2,i)],...
                     [cdpr_v.cable(i).pos_OA_glob(3) p(3,i)]);
-                r = cdpr_p.cable(i).pos_D_glob+cdpr_p.cable(i).swivel_pulley_r*...
+                r = cdpr_p.cable(i).pos_OD_glob+cdpr_p.cable(i).swivel_pulley_r*...
                     (cdpr_v.cable(i).vers_u+cdpr_v.cable(i).vers_n);
                 addpoints(obj.lines.cable(i),...
                     [cdpr_v.cable(i).pos_OA_glob(1) r(1,1)],...

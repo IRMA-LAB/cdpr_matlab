@@ -10,7 +10,7 @@ for k = 1: length(ws_data)
         for l = 1:3
             switch l
                 case 1
-                    point = cdpr_p.cable(i).pos_D_glob;
+                    point = cdpr_p.cable(i).pos_OD_glob;
                 case 2
                     point = cdpr_v.cable(i).pos_OA_glob;
                 case 3

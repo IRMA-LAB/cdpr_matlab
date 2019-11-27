@@ -11,9 +11,9 @@ addpath('../../libs/under_actuated')
 folder = '../../data';
 
 [cdpr_parameters, cdpr_variables,ws_data, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("config_calib","DynamicPlanning"); 
+  LoadConfigAndInit("Grab_prototype_33","Direct Simulation"); 
 
-traj_name = '..\..\data\planning_results\InverseRTR';
+traj_name = '..\..\data\planning_results\InverseSTD';
 traj(1) = load(strcat(traj_name,'1.mat'));
 traj(2) = load(strcat(traj_name,'2.mat'));
 traj(3) = load(strcat(traj_name,'3.mat'));
@@ -42,9 +42,9 @@ for j=1:cdpr_parameters.n_cables
    
 end
  
-%  sol_real = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics(cdpr_parameters,...
-%         cdpr_variables,utilities,spline_id,time,state),...
-%         0:utilities.t_interval:t(end),p0);  
- sol_real_simp = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics(cdpr_parameters,...
+ simulation_output = HuenDiscreteSolver(@(time,state) IntegrableDirectDynamics(cdpr_parameters,...
         cdpr_variables,utilities,spline_id,time,state),...
-        0:utilities.t_interval:t(end),p0);     
+        0:utilities.t_interval:t(end),p0);    
+ cdpr_outputs = GenerateOutputDirectSimulation(cdpr_parameters,cdpr_variables,simulation_output,cdpr_outputs); 
+ DataLoggerStruct(cdpr_outputs,folder,'DirectSTD',true,cdpr_parameters,cdpr_variables,record,utilities);
+

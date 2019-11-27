@@ -1,4 +1,4 @@
-function out = CalcWorkspace(cdpr_p,cdpr_v,ut,type,tau_limits,folder,rec,varargin)
+function out = CalcWorkspace(cdpr_p,cdpr_v,ut,out,type,tau_limits,folder,rec,varargin)
 
 n_arg_opt = length(varargin);
 

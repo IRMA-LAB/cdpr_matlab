@@ -23,7 +23,16 @@ classdef CdprParameter
       json.startup;
       p =  json.read(name);
       workspace_center = zeros(3,1);
-      obj.n_cables = length(p.cable);
+      i = 0;
+      while (i<length(p.actuator))
+         i = i+1; 
+         if (p.actuator(i).active == 0)
+             p.actuator(i) = [];
+             i = i-1;
+         end
+      end
+      
+      obj.n_cables = length(p.actuator);
       obj.rotation_parametrization = p.rotation_parametrization;
       if (obj.rotation_parametrization ==  RotationParametrizations.QUATERNION)
         obj.pose_dim = 7;
@@ -32,8 +41,8 @@ classdef CdprParameter
       end
       obj.platform = PlatformParameters(p.platform);
       for i=1:obj.n_cables
-        cable(i,1) = CableParameters(p.cable(i));
-        workspace_center = workspace_center + cable(i,1).pos_D_glob;
+        cable(i,1) = CableParameters(p.actuator(i));
+        workspace_center = workspace_center + cable(i,1).pos_OD_glob;
       end  
       if (obj.n_cables<6)
       obj.underactuated_platform = UnderActuatedPar(obj.n_cables,obj.pose_dim);
