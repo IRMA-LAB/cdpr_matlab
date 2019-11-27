@@ -23,6 +23,7 @@ function [parameters,variables, ws_data,outputs,record,utilities] = ...
 
 parameters = CdprParameter(strcat(config_name,'.json'));
 variables = CdprVar(parameters.n_cables);
+variables = variables.InitTransformationMatrix(parameters.pose_dim);
 
 outputFieldsPlatform = fieldnames(variables.platform);
 n_elem = parameters.n_cables;

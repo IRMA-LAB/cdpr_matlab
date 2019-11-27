@@ -39,6 +39,8 @@ classdef UnderActuatedVar
     
     external_load_ss_a;%
     external_load_ss_u;%
+    
+    Gamma_mat
 
   end
   methods
@@ -158,6 +160,13 @@ classdef UnderActuatedVar
                 var(par.actuated_mask) = obj.actuated_deriv_2;
                 var(par.unactuated_mask) = obj.unactuated_deriv_2;
         end
+
+    end
+    
+    function obj = UpdateReducedTransformationMatrix(obj,mat)
+        
+        dims = size(obj.analitic_orthogonal);
+        obj.Gamma_mat = mat(dims(2)+1:dims(1),:)*obj.analitic_orthogonal;
 
     end
   end
