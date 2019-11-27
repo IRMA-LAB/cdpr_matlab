@@ -11,7 +11,7 @@ limits(:,1) = [-Inf;-Inf;z_lim_inf];
 limits(:,2) = [Inf;Inf;Inf];
 
 for i=1:cdpr_p.n_cables
-    point = cdpr_p.cable(i).pos_D_glob;
+    point = cdpr_p.cable(i).pos_OD_glob;
     if i==1
         limits(:,2) = point;
         limits(1:2,1) = point(1:2,1);

@@ -11,7 +11,7 @@ addpath('../../libs/under_actuated')
 folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("config_calib","HomingTest33");
+  LoadConfigAndInit("Grab_prototype_33","HomingTest33");
 
 % % Generation of the "roughly" estimated home pose
 tension_limits = [50 100];

@@ -13,16 +13,16 @@ folder = '../../data';
 
 %workspace of grab underactuated prototype
 [cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("config_calib","calib_mod_WS");
+  LoadConfigAndInit("Grab_prototype_33","Grab_prototype_33_WS");
 tension_limits = [10;1000];
 z_lim_inf = -1.5;
 cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
-    utilities,1,tension_limits,folder,record,z_lim_inf);
+    utilities,cdpr_outputs,1,tension_limits,folder,record,z_lim_inf);
 
 % [cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
-%   LoadConfigAndInit("Greenline_config","Greenline_WS");
+%   LoadConfigAndInit("Greenline_prototype","Greenline_WS");
 % 
 %     tension_limits = [0.1;10];
-%     position = [0;0;-0.3];
+%     position = [0;0;-0.2];
 %     cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
 %         utilities,2,tension_limits,folder,record,position);
