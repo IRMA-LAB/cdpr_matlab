@@ -30,7 +30,7 @@ classdef PlatformParameters
       obj.mass = platform_parameters_struct.mass;
       obj.inertia_mat_G_loc = platform_parameters_struct.inertia_mat_G_loc;
       obj.pos_PG_loc = platform_parameters_struct.pos_PG_loc; 
-      obj.gravity_acceleration = -norm(obj.gravity_acceleration)*platform_parameters_struct.grav_ax;
+      obj.gravity_acceleration = -norm(obj.gravity_acceleration)*platform_parameters_struct.gravity_axis;
       
       obj.ext_force_loc = platform_parameters_struct.ext_force_loc;
       obj.ext_torque_loc = platform_parameters_struct.ext_torque_loc;
