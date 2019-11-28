@@ -12,6 +12,8 @@ classdef CdprVar
     geometric_jacobian_d;%
     analitic_jacobian_d;%
     
+    D_mat;%is a matrix (size[3,3]) that transforms the 1th order derivatives of rotation angles to angular velocity.
+    
     tension_vector;%
     cable_vector;
     cable_speed;
@@ -40,6 +42,20 @@ classdef CdprVar
         obj.analitic_jacobian(i,:) = obj.cable(i).analitic_jacobian_row;
         obj.cable_vector(i,1) = obj.cable(i).complete_length;
       end  
+    end
+    function obj = InitTransformationMatrix(obj,pose_dim)
+        %UPDATEMASSMATRIX updates the state space mass matrix of the platform. 
+        %
+        %   PAR is a structure containing the inertial properties of the 
+        %   platform.
+        obj.D_mat = eye(pose_dim);
+    end
+    function obj = UpdateTransformationMatrix(obj,par)
+        %UPDATEMASSMATRIX updates the state space mass matrix of the platform. 
+        %
+        %   PAR is a structure containing the inertial properties of the 
+        %   platform.
+        obj.D_mat(4:par.pose_dim,4:par.pose_dim) = obj.platform.H_mat;
     end
   end
 end

@@ -12,7 +12,7 @@ addpath('../../libs/under_actuated')
 folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("config_calib","DynamicPlanning");
+  LoadConfigAndInit("Grab_prototype_33","DynamicPlanning");
 
 % fare la cartella output per la roba enorme con dentro un .keep
 

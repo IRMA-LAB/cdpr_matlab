@@ -5,9 +5,13 @@ data.rot_mat = ws_data.rot_mat(:,:,i);
 data.ang_par = cdpr_p.RotToPar(data.rot_mat);
 
 cdpr_v = UpdateIKZeroOrd(data.pos,data.ang_par,cdpr_p,cdpr_v);
+cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateAnaliticJacobians...
+    (cdpr_p.underactuated_platform,cdpr_v.analitic_jacobian);
+cdpr_v = cdpr_v.UpdateTransformationMatrix(cdpr_p);
+cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateReducedTransformationMatrix(cdpr_v.D_mat);
 
 data.nat_freq = ws_data.nat_freq(:,i);
-data.normal_modes = ws_data.normal_modes(:,:,i);
+data.normal_modes = linsolve(cdpr_v.underactuated_platform.Gamma_mat,ws_data.normal_modes(:,:,i));
 data.l = cdpr_v.cable_vector;
 
 sign_p = 2*rand(3,1)-1;
@@ -19,6 +23,7 @@ data.p0 = [start_conf_act;data.start_conf_un_act];
 cdpr_v = UpdateIKZeroOrd(start_conf_act,data.start_conf_un_act,cdpr_p,cdpr_v);
 cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateAnaliticJacobians...
     (cdpr_p.underactuated_platform,cdpr_v.analitic_jacobian);
+
 sign_v = rand(3,1);
 sign_v = sign_v./abs(sign_v);
 data.start_conf_un_act_der = dc.*(pi/180).*sign_v;
