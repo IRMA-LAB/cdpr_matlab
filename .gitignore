@@ -1,2 +1,6 @@
+# Matlab
+*.m~
+
+# Ignored folders
 apps/calibration_identification
 data/videos

@@ -1,19 +1,19 @@
 % CreateConfigFile
-% The purpose of this script is to create the configuration file. The file  
+% The purpose of this script is to create the configuration file. The file
 % extension is ".json", so it is necessary to download a software that
 % encode matlab object in json format.
 
-clear all;
+clear;
 clc;
 
-s.rotation_parametrization = char(RotationParametrizations.TAYT_BRYAN); 
+s.rotation_parametrization = char(RotationParametrizations.TAIT_BRYAN);
 
 s.platform.mass = 8.0064014;    %[kg]
 s.platform.ext_force_loc = [0;0;0]; %[N]
 s.platform.ext_moments_loc = [0;0;0]; % [Nm]
 s.platform.inertia_mat_G_loc = [0.13974096 0 0;
-                                     0 0.13974096 0;
-                                     0 0 0.21622689]; % [kg m^2]
+  0 0.13974096 0;
+  0 0 0.21622689]; % [kg m^2]
 s.platform.pos_G_loc = [0;0;0.18185573]; % [m]
 
 s.cable(1).pos_A_loc = [0;-0.2668;0.2700]; % [m]
@@ -54,4 +54,4 @@ json.startup;
 json.write(s,"my_config_1.json",'Indent',2);
 cd ('../Common');
 
-clear all
+clear
