@@ -5,13 +5,13 @@ classdef CdprParameter
   %   of static parameters as object's properties.
   %
   properties
-    platform;% is an object containing the parameters of the platform.
-    cable;% is an object containing the parameters of each cable and its corresponding swivel pulley.
-    underactuated_platform
-    rotation_parametrization;% is a string containing the name of the adopted method for rotation parameterization.
-    n_cables;%is the number of all cables.
-    pose_dim;%is the number of parameters used for platform pose parameterization.
-    workspace_center;% is a vector (size[3,1], [m]) containing the components of the workspace center, projected in the fixed frame.
+    platform  % object containing the parameters of the platform.
+    cable     % object containing the parameters of each cable and its corresponding swivel pulley.
+    underactuated_platform % TBD
+    rotation_parametrization % a string containing the name of the adopted method for rotation parameterization.
+    n_cables  % the number of all cables.
+    pose_dim  % the number of parameters used for platform pose parameterization.
+    workspace_center  % a vector (size[3,1], [m]) containing the components of the workspace center, projected in the fixed frame.
   end
   
   methods

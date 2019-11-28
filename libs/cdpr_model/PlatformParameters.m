@@ -7,18 +7,17 @@ classdef PlatformParameters
   %   wrench components acting on it. The wrench is evaluated wrt the center
   %   of mass G.
   %
-  properties
+  properties    
+    ext_force_loc   % a vector (size[3,1], [N]), containing the components of the external forces acting on the platform, projected in the local frame.
+    ext_torque_loc  % a vector (size[3,1], [Nm]), containing the components of the external moments acting on the platform, about the center of mass G, projected in the local frame.
+    ext_force_glob  % a vector (size[3,1], [N]), containing the components of the external forces acting on the platform, projected in the global frame.
+    ext_torque_glob % a vector (size[3,1], [Nm]), containing the components of the external moments acting on the platform, about the center of mass G, projected in the global frame.
     
-    ext_force_loc;% is a vector (size[3,1], [N]), containing the components of the external forces acting on the platform, projected in the local frame.
-    ext_torque_loc;% is a vector (size[3,1], [Nm]), containing the components of the external moments acting on the platform, about the center of mass G, projected in the local frame.
-    ext_force_glob;% is a vector (size[3,1], [N]), containing the components of the external forces acting on the platform, projected in the local frame.
-    ext_torque_glob;% is a vector (size[3,1], [Nm]), containing the components of the external moments acting on the platform, about the center of mass G, projected in the local frame.
+    mass            % the mass([kg]) of the platform.
+    inertia_mat_G_loc  % a matrix (size [3,3], [kg m^2]), containing the elements of the inertia matrix about G, projected in the local frame.
+    pos_PG_loc      % a vector (size[3,1],[m]), containing the components of the center of mass position, projected in the local frame.
     
-    mass; % is the mass([kg]) of the platform.
-    inertia_mat_G_loc;% is a matrix (size [3,3], [kg m^2]), containing the elements of the inertia matrix about G, projected in the local frame.
-    pos_PG_loc; % is a vector (size[3,1],[m]), containing the components of the center of mass position, projected in the local frame.
-    
-    gravity_acceleration = [0; 0; -9.80665]; %[m/s^2]
+    gravity_acceleration = [0; 0; -9.80665]  % [m/s^2]
   end
   
   methods
