@@ -4,7 +4,7 @@
     {
 	  "active": true,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.017042763371291,
 	  "pos_OD_glob": [
         [-0.964543778946725],
@@ -40,7 +40,7 @@
 	{
 	  "active": false,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.017042763371291,
 	  "pos_OD_glob": [
         [-0.964543778946725],
@@ -76,7 +76,7 @@
 	{
 	  "active": false,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.017042763371291,
 	  "pos_OD_glob": [
         [-0.964543778946725],
@@ -112,7 +112,7 @@
 	{
 	  "active": false,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.017042763371291,
 	  "pos_OD_glob": [
         [-0.964543778946725],
@@ -148,7 +148,7 @@
 	{
 	  "active": true,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.023407121035722,
 	  "pos_OD_glob": [
         [1.145032609779645],
@@ -184,7 +184,7 @@
     {
 	  "active": false,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.023407121035722,
 	  "pos_OD_glob": [
         [1.145032609779645],
@@ -220,7 +220,7 @@
 	{
 	  "active": true,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.015270180375675,
 	  "pos_OD_glob": [
         [-0.966924861743611],
@@ -256,7 +256,7 @@
     {
 	  "active": false,
 	  "pulley": {
-	  "transmission_ratio": 3.814697265625e-6,
+	  "transmission_ratio": 2.396844981071314e-05,
 	  "radius": 0.015270180375675,
 	  "pos_OD_glob": [
         [-0.966924861743611],
