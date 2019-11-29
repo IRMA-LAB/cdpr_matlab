@@ -11,14 +11,11 @@ function cdpr_v = CalcCablesStaticTension(cdpr_v)
 %
 %   CDPR_V is a structure containing time dependent variables of the cdpr.
 
-vector = linsolve(cdpr_v.geometric_jacobian*cdpr_v.geometric_jacobian',...
-    cdpr_v.geometric_jacobian*cdpr_v.platform.ext_load);
-for i=1:length(vector)
-    if (vector(i)<=0)
-        vector(i)=NaN;
-    end
+vector = linsolve(cdpr_v.geometric_jacobian * cdpr_v.geometric_jacobian',...
+  cdpr_v.geometric_jacobian * cdpr_v.platform.ext_load);
+for i = 1:length(vector)
+  if (vector(i) <= 0)
+    vector(i) = NaN;
+  end
 end
 cdpr_v.tension_vector = vector;
-
-
-end
