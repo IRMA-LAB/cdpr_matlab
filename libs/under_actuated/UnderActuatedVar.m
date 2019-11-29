@@ -108,7 +108,7 @@ classdef UnderActuatedVar
       obj.external_load_ss_u = l(par.unactuated_mask);%      
     end
     
-    function obj = ExtractVars(obj,par,order,var)      
+    function obj = ExtractVars(obj, par, order, var)      
       switch order
         case 0
           obj.actuated = var(par.actuated_mask);

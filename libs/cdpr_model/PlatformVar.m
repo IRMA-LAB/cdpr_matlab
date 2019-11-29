@@ -5,47 +5,47 @@ classdef PlatformVar
   %   dependent variables and stores them as object's properties.
   %
   properties
-    position;% is a vector (size[3,1], [m]), containing the components of the position vector of the platform point P, projected on the global frame.
-    rot_mat;%is the rotation matrix (size[3,3]).
-    pos_PG_glob;%is a vector(size[3,1],[m]), containing the components of the position vector (G-P), projected on the global frame.
-    pos_OG_glob;%is a vector(size[3,1],[m]), containing the components of the position vector (G-O), projected on the global frame.
+    position % a vector (size[3,1], [m]), containing the components of the position vector of the platform point P, projected on the global frame.
+    rot_mat % the rotation matrix (size[3,3]).
+    pos_PG_glob % a vector(size[3,1],[m]), containing the components of the position vector (G-P), projected on the global frame.
+    pos_OG_glob % a vector(size[3,1],[m]), containing the components of the position vector (G-O), projected on the global frame.
     
-    velocity;%is a vector (size[3,1], [m/s]), containing the components of the velocity vector of the platform point P, projected on the global frame.
-    angular_vel;%is a vector (size[3,1], [rad/s]), containing the components of angular velocity, projected on the global frame.
-    vel_OG_glob;%is a vector (size[3,1], [m/s]), containing the components of the velocity vector of the platform center of mass G, projected on the global frame.
+    velocity % a vector (size[3,1], [m/s]), containing the components of the velocity vector of the platform point P, projected on the global frame.
+    angular_vel % a vector (size[3,1], [rad/s]), containing the components of angular velocity, projected on the global frame.
+    vel_OG_glob % a vector (size[3,1], [m/s]), containing the components of the velocity vector of the platform center of mass G, projected on the global frame.
     
-    acceleration;%is a vector (size[3,1], [m/s^2]), containing the components of the acceleretion vector of the platform point P, projected on the global frame.
-    angular_acc;%is a vector (size[3,1], [rad/s^2]), containing the components of angular acceleration, projected on the global frame.
-    acc_OG_glob;%is a vector (size[3,1], [m/s^2]), containing the components of the acceleration vector of the platform point G, projected on the global frame.
+    acceleration % a vector (size[3,1], [m/s^2]), containing the components of the acceleretion vector of the platform point P, projected on the global frame.
+    angular_acc % a vector (size[3,1], [rad/s^2]), containing the components of angular acceleration, projected on the global frame.
+    acc_OG_glob % a vector (size[3,1], [m/s^2]), containing the components of the acceleration vector of the platform point G, projected on the global frame.
     
-    inertia_matrix_global;%is the inertia matrix(size[3,3] [kg m^2]), expressed in the global frame.
-    mass_matrix_global;%is the mass matrix(size[6,6]), expressed in the global frame.
-    ext_load;%
-    dyn_load;%
-    total_load;%
+    inertia_matrix_global % the inertia matrix(size[3,3] [kg m^2]), expressed in the global frame.
+    mass_matrix_global % the mass matrix(size[6,6]), expressed in the global frame.
+    ext_load %
+    dyn_load %
+    total_load %
     
-    orientation;%is a vector (size[3,1], [rad]), containing the angles of rotation used to parameterize the platform orientation.
-    quaternion;%is a vector (size[4,1]), containing the components of the quaternion used to parameterize platform orientation.
-    pose;%is a vector(size[6,1]), containing the the properties POSITION and ORIENTATION, used to parameterize platform pose.
-    pose_q;%is a vector(size[7,1]), containing the the properties POSITION and QUATERNION, used to parameterize platform pose.
+    orientation % a vector (size[3,1], [rad]), containing the angles of rotation used to parameterize the platform orientation.
+    quaternion % a vector (size[4,1]), containing the components of the quaternion used to parameterize platform orientation.
+    pose % a vector(size[6,1]), containing the the properties POSITION and ORIENTATION, used to parameterize platform pose.
+    pose_q % a vector(size[7,1]), containing the the properties POSITION and QUATERNION, used to parameterize platform pose.
     
-    orientation_deriv;%is a vector (size[3,1], [rad/s]), containing the 1th order time derivatives of angles of rotation.
-    quaternion_deriv;%is a vector (size[3,1]), containing the 1th order time derivatives of QUATERNION.
-    pose_d;
-    pose_q_d;
-    H_mat;%is a matrix (size[3,3]) that transforms the 1th order derivatives of rotation angles to angular velocity.
+    orientation_deriv % a vector (size[3,1], [rad/s]), containing the 1th order time derivatives of angles of rotation.
+    quaternion_deriv % a vector (size[3,1]), containing the 1th order time derivatives of QUATERNION.
+    pose_d
+    pose_q_d
+    H_mat % a matrix (size[3,3]) that transforms the 1th order derivatives of rotation angles to angular velocity.
     
     
-    orientation_deriv_2;%is a vector (size[3,1], [rad/s^2]), containing the 2nd order time derivatives of angles of rotation.
-    quaternion_deriv_2;%is a vector (size[3,1]), containing the 2nd order time derivatives of QUATERNION.
-    pose_d_2;
-    pose_q_d_2;
-    H_mat_deriv;%is a matrix (size[3,3]), obtained by time differentiation of the matrix H_MAT.
+    orientation_deriv_2 % a vector (size[3,1], [rad/s^2]), containing the 2nd order time derivatives of angles of rotation.
+    quaternion_deriv_2 % a vector (size[3,1]), containing the 2nd order time derivatives of QUATERNION.
+    pose_d_2
+    pose_q_d_2
+    H_mat_deriv % a matrix (size[3,3]), obtained by time differentiation of the matrix H_MAT.
     
-    mass_matrix_global_ss;%is the mass matrix(size[6,6]), expressed in the global frame.
-    ext_load_ss;%
-    dyn_load_ss;%
-    total_load_ss;%
+    mass_matrix_global_ss % the mass matrix(size[6,6]), expressed in the global frame.
+    ext_load_ss
+    dyn_load_ss
+    total_load_ss
   end
   
   methods
@@ -76,7 +76,7 @@ classdef PlatformVar
           obj.orientation = orient;
           obj.pose = [pos; orient];
           obj.quaternion = Rot2Quat(obj.rot_mat);
-          obj.pose_q = [pos;obj.quaternion];
+          obj.pose_q = [pos; obj.quaternion];
           obj.H_mat = HtfTaytBryan(obj.orientation);
         case RotationParametrizations.RPY
           obj.rot_mat = RotRPY(orient);
@@ -95,7 +95,7 @@ classdef PlatformVar
         case RotationParametrizations.QUATERNION
           obj.rot_mat = Quat2Rot(orient);
           obj.quaternion = orient;
-          obj.pose_q = [pos;orient];
+          obj.pose_q = [pos; orient];
           %obj.orient = ??;
           %obj.pose = ??;
           obj.H_mat = HtfQuaternion(obj.quaternion);
@@ -206,7 +206,7 @@ classdef PlatformVar
       anti_com = Anti(obj.pos_PG_glob);
       obj.mass_matrix_global(1:3, 1:3) = eye(3) .* par.platform.mass;
       obj.inertia_matrix_global = obj.rot_mat * par.platform.inertia_mat_G_loc...
-        * obj.rot_mat'- par.platform.mass .* anti_com * anti_com;
+        * obj.rot_mat' - par.platform.mass .* anti_com * anti_com;
       obj.mass_matrix_global(1:3, 4:6) = -par.platform.mass .* anti_com;
       obj.mass_matrix_global(4:6, 1:3) = par.platform.mass .* anti_com;
       obj.mass_matrix_global(4:6, 4:6) = obj.inertia_matrix_global;
@@ -219,7 +219,7 @@ classdef PlatformVar
       %   platform.
       obj = obj.UpdateMassMatrix(par);
       obj.mass_matrix_global_ss(1:3, 1:3) = obj.mass_matrix_global(1:3, 1:3);
-      obj.mass_matrix_global_ss(1:3, 4:6) = obj.mass_matrix_global(1:3, 4:6) * ...
+      obj.mass_matrix_global_ss(1:3, 4:6) = obj.mass_matrix_global(1:3, 4:6) *...
         obj.H_mat;
       obj.mass_matrix_global_ss(4:6, 1:3) = obj.H_mat' *...
         obj.mass_matrix_global(4:6, 1:3);

@@ -1,4 +1,4 @@
-function complete_length = CalcCableLen(sw_r,ang_t,pos_BA_glob)
+function complete_length = CalcCableLen(sw_r, ang_t, pos_BA_glob)
 %CALCCABLELEN computes the length of the cable.
 %   %CALCCABLELEN computes the length of the cable from the constraint
 %   equation that links the norm of the position vector (A-B) with the
@@ -10,7 +10,4 @@ function complete_length = CalcCableLen(sw_r,ang_t,pos_BA_glob)
 %   POS_BA_GLOB is a vector(size[3,1],[m]), containing  the components of
 %   the position vector (A-B), projected on the global frame.
 
-
-  complete_length = sw_r*(pi-ang_t)+sqrt(dot(pos_BA_glob,pos_BA_glob));
-  
-end
+complete_length = sw_r * (pi - ang_t) + sqrt(dot(pos_BA_glob, pos_BA_glob));
