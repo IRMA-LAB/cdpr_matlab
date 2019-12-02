@@ -1,5 +1,6 @@
 function cable_v = UpdateCableSecondOrd(platform_v, cable_v)
-%UPDATECABLESECONDORD updates each variable connected to the 2nd order kinematics problem of the cable.
+%UPDATECABLESECONDORD updates each variable connected to the 2nd order
+% kinematics problem of the cable.
 %
 %   UPDATECABLESECONDORD updates each time dependent variable connected to
 %   2th order kinematic of the cable and its swivel pulley storing them
