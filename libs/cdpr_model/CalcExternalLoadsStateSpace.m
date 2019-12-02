@@ -3,7 +3,8 @@ function cdpr_v = CalcExternalLoadsStateSpace(cdpr_v, cdpr_p)
 %projected onto the state space.
 %
 %   CALCEXTERNALLOADS computes the components of the external loads in terms of
-%   external forces and moments acting on the platform, projected onto the state space.
+%   external forces and moments acting on the platform, projected onto the state
+%   space.
 %
 %   CDPR_P is a structure containing static parameters of the platform.
 %
