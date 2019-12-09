@@ -1,4 +1,5 @@
 {
+  "controlled_vars_mask": [1,1,1,0,0,0],
   "rotation_parametrization": "TAIT_BRYAN",
   "actuator": [
     {

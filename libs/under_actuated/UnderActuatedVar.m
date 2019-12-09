@@ -49,7 +49,7 @@ classdef UnderActuatedVar
       obj.geometric_jacobian_u = Jg(:, par.unactuated_mask);
       [n, m] = size(Jg);
       
-      app1 = zeros(n, m-n);
+      app1 = zeros(n, m - n);
       app2 = eye(m - n);
       for i = 1:m-n
         app1(:, i) = linsolve(-obj.geometric_jacobian_a, ...
@@ -62,9 +62,9 @@ classdef UnderActuatedVar
     function obj = UpdateAnaliticJacobians(obj, par, Ja)
       obj.analitic_jacobian_a = Ja(:, par.actuated_mask);
       obj.analitic_jacobian_u = Ja(:, par.unactuated_mask);
-      [n,m] = size(Ja);
+      [n, m] = size(Ja);
       
-      app1 = zeros(n, m-n);
+      app1 = zeros(n, m - n);
       app2 = eye(m - n);
       for i = 1:m-n
         app1(:,i) = linsolve(-obj.analitic_jacobian_a,...
@@ -74,41 +74,41 @@ classdef UnderActuatedVar
       obj.analitic_orthogonal(par.unactuated_mask,:) = app2;
     end
     
-    function obj = UpdateDynamics(obj, par, J, M, l)      
+    function obj = UpdateDynamics(obj, par, J, M, l)
       obj = UpdateGeometricJacobians(obj, par, J);
       
       obj.mass_matrix_global_a = M(:, par.actuated_mask);
       obj.mass_matrix_global_u = M(:, par.unactuated_mask);
       
-      obj.total_load_a = l(par.actuated_mask);%
-      obj.total_load_u = l(par.unactuated_mask);%      
+      obj.total_load_a = l(par.actuated_mask);
+      obj.total_load_u = l(par.unactuated_mask);
     end
     
-    function obj = UpdateStatics(obj, par, J, l)      
+    function obj = UpdateStatics(obj, par, J, l)
       obj = UpdateGeometricJacobians(obj, par, J);
       
-      obj.external_load_a = l(par.actuated_mask);%
-      obj.external_load_u = l(par.unactuated_mask);%      
+      obj.external_load_a = l(par.actuated_mask);
+      obj.external_load_u = l(par.unactuated_mask);
     end
     
-    function obj = UpdateDynamicsStateSpace(obj, par, J, M, l)      
+    function obj = UpdateDynamicsStateSpace(obj, par, J, M, l)
       obj = UpdateAnaliticJacobians(obj, par, J);
       
       obj.mass_matrix_global_ss_a = M(:, par.actuated_mask);
       obj.mass_matrix_global_ss_u = M(:, par.unactuated_mask);
       
-      obj.total_load_ss_a = l(par.actuated_mask);%
-      obj.total_load_ss_u = l(par.unactuated_mask);%
+      obj.total_load_ss_a = l(par.actuated_mask);
+      obj.total_load_ss_u = l(par.unactuated_mask);
     end
     
-    function obj = UpdateStaticsStateSpace(obj, par, J, l)      
+    function obj = UpdateStaticsStateSpace(obj, par, J, l)
       obj = UpdateAnaliticJacobians(obj, par, J);
       
-      obj.external_load_ss_a = l(par.actuated_mask);%
-      obj.external_load_ss_u = l(par.unactuated_mask);%      
+      obj.external_load_ss_a = l(par.actuated_mask);
+      obj.external_load_ss_u = l(par.unactuated_mask);
     end
     
-    function obj = ExtractVars(obj, par, order, var)      
+    function obj = ExtractVars(obj, par, order, var)
       switch order
         case 0
           obj.actuated = var(par.actuated_mask);
@@ -119,7 +119,7 @@ classdef UnderActuatedVar
         case 2
           obj.actuated_deriv_2 = var(par.actuated_mask);
           obj.unactuated_deriv_2 = var(par.unactuated_mask);
-      end      
+      end
     end
     
     function obj = SetVars(obj, order, var_act, var_un_act)
@@ -133,10 +133,10 @@ classdef UnderActuatedVar
         case 2
           obj.actuated_deriv_2 = var_act;
           obj.unactuated_deriv_2 = var_un_act;
-      end      
+      end
     end
     
-    function var = RecomposeVars(obj, order, par)      
+    function var = RecomposeVars(obj, order, par)
       var = zeros(length([obj.actuated; obj.unactuated]), 1);
       switch order
         case 0
@@ -148,12 +148,12 @@ classdef UnderActuatedVar
         case 2
           var(par.actuated_mask) = obj.actuated_deriv_2;
           var(par.unactuated_mask) = obj.unactuated_deriv_2;
-      end      
+      end
     end
     
-    function obj = UpdateReducedTransformationMatrix(obj, mat)      
+    function obj = UpdateReducedTransformationMatrix(obj, mat)
       dims = size(obj.analitic_orthogonal);
-      obj.Gamma_mat = mat(dims(2) + 1:dims(1), :) * obj.analitic_orthogonal;      
+      obj.Gamma_mat = mat(dims(2) + 1:dims(1), :) * obj.analitic_orthogonal;
     end
   end
 end
