@@ -1,4 +1,4 @@
-function [S,index] = ComputeShaper(data,ind,shaper_order)
+function [S,index] = ComputeTwoModeShaper(data,ind,shaper_order)
 
     period_max = (max(data.info(ind).nat_period)+max(data.info(ind+1).nat_period))/2;
     period_min = (min(data.info(ind).nat_period)+min(data.info(ind+1).nat_period))/2;
