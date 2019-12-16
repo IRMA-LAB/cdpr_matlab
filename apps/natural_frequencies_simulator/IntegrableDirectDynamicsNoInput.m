@@ -9,10 +9,10 @@ function vect = IntegrableDirectDynamicsNoInput(cdpr_p,cdpr_v,ut,...
     Mat = [cdpr_v.platform.mass_matrix_global_ss cdpr_v.analitic_jacobian';
            cdpr_v.analitic_jacobian zeros(cdpr_p.n_cables)];
     f = [cdpr_v.platform.total_load_ss;
-        -cdpr_v.analitic_jacobian_d*state(7:12)-2*ut.baum_zita.*ut.baum_omega.*K1-(ut.baum_omega.^2).*K0];
+        -cdpr_v.analitic_jacobian_d*state(7:12)+(-2*ut.baum_zita.*ut.baum_omega.*K1-(ut.baum_omega.^2).*K0)/10];
     v = linsolve(Mat,f);
-    
+   
     vect(1:6,1) = state(7:12);
     vect(7:12,1) = v(1:6);
-
+    
 end

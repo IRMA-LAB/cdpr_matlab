@@ -1,4 +1,4 @@
-function mat = LineFunction(t,p0,p1,s)
+function mat = LineFunction(t,p0,p1)
  
  l = length(p0);
  for i=1:l

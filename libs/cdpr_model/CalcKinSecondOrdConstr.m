@@ -17,12 +17,12 @@ function [cdpr_v,constraint] = CalcKinSecondOrdConstr(acceleration,orientation_d
 %   CONSTR is an array containing the value of the first order differential
 %   kinematic constraint
 
-cdpr_v.platform = UpdatePlatformVelocity(acceleration,orientation_d2,...
+cdpr_v.platform = UpdatePlatformAcceleration(acceleration,orientation_d2,...
   cdpr_p.rotation_parametrization,cdpr_v.platform);
 constraint = zeros(cdpr_p.n_cables,1);
 
 for i=1:length(cdpr_v.cable)
-  cdpr_v.cable(i) = UpdateCableSecondOrd(cdpr_p.cable(i),cdpr_v.platform,cdpr_v.cable(i));
+  cdpr_v.cable(i) = UpdateCableSecondOrd(cdpr_v.platform,cdpr_v.cable(i));
   constraint(i,1) = cdpr_v.cable(i).complete_acceleration - l_d2(i);
 end
 

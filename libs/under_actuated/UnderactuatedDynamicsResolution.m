@@ -12,12 +12,12 @@ cdpr_v.underactuated_platform = CalcUnactuatedAcceleration(cdpr_v.underactuated_
 cdpr_v.platform.pose_d_2 = cdpr_v.underactuated_platform.RecomposeVars(2,ucdpr_p);
 cdpr_v = CalcCablesDynamicTensionStateSpace(cdpr_v);
 
-for i=1:length(cdpr_v.cable)
-    if (isnan(cdpr_v.tension_vector(i)))
-        cdpr_v.underactuated_platform.unactuated_deriv_2=NaN(length(cdpr_v.underactuated_platform.unactuated_deriv_2),1);
-        break
-    end
-end
+% for i=1:length(cdpr_v.cable)
+%     if (isnan(cdpr_v.tension_vector(i)))
+%         cdpr_v.underactuated_platform.unactuated_deriv_2=NaN(length(cdpr_v.underactuated_platform.unactuated_deriv_2),1);
+%         break
+%     end
+% end
 cdpr_v.platform.pose_d_2 = cdpr_v.underactuated_platform.RecomposeVars(2,ucdpr_p);
 
 end

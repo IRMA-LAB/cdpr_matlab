@@ -12,9 +12,13 @@ classdef UnderActuatedVar
     geometric_jacobian_a;%
     geometric_jacobian_u;%
     geometric_orthogonal;
+    geometric_parallel;
+    geometric_tau;
     analitic_jacobian_a;%
     analitic_jacobian_u;%
     analitic_orthogonal;
+    analitic_parallel;
+    analitic_tau
     
     actuated_deriv;
     unactuated_deriv;
@@ -51,12 +55,22 @@ classdef UnderActuatedVar
     [n,m] = size(Jg);
     
     app1 = zeros(n,m-n);
+    app3 = zeros(n,n);
     app2 = eye(m-n);
     for i = 1:m-n
         app1(:,i) = linsolve(-obj.geometric_jacobian_a,obj.geometric_jacobian_u(:,i));
+        v = zeros(n,1); v(i) = 1;
+        app3(:,i) = linsolve(obj.geometric_jacobian_a,v);
     end
     obj.geometric_orthogonal(par.actuated_mask,:) = app1;
     obj.geometric_orthogonal(par.unactuated_mask,:) = app2;
+    obj.geometric_parallel(par.actuated_mask,:) = app3;
+    obj.geometric_parallel(par.unactuated_mask,:) = zeros(m-n,n);
+    end
+    
+    function obj = UpdateGeometricTauJacobian(obj)
+       obj.geometric_tau =  obj.geometric_parallel'*linsolve...
+           (obj.geometric_orthogonal*obj.geometric_orthogonal',obj.geometric_orthogonal);
     end
     
     function obj = UpdateAnaliticJacobians(obj,par,Ja) 
@@ -65,12 +79,22 @@ classdef UnderActuatedVar
     [n,m] = size(Ja);
     
     app1 = zeros(n,m-n);
+    app3 = zeros(n,n);
     app2 = eye(m-n);
     for i = 1:m-n
         app1(:,i) = linsolve(-obj.analitic_jacobian_a,obj.analitic_jacobian_u(:,i));
+        v = zeros(n,1); v(i) = 1;
+        app3(:,i) = linsolve(obj.analitic_jacobian_a,v);
     end
     obj.analitic_orthogonal(par.actuated_mask,:) = app1;
     obj.analitic_orthogonal(par.unactuated_mask,:) = app2;
+    obj.analitic_parallel(par.actuated_mask,:) = app3;
+    obj.analitic_parallel(par.unactuated_mask,:) = zeros(m-n,n);
+    end
+    
+    function obj = UpdateAnaliticTauJacobian(obj)
+       obj.analitic_tau =  obj.analitic_parallel'*linsolve...
+           (obj.analitic_orthogonal*obj.analitic_orthogonal',obj.analitic_orthogonal);
     end
     
     function obj = UpdateDynamics(obj,par,J,M,l)

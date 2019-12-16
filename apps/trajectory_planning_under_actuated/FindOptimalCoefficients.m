@@ -1,5 +1,7 @@
 function vector = FindOptimalCoefficients(k,cdpr_p,cdpr_v,ut,sim_data,i,geom_fun,record)
 
+    K = [k(1:2) k(3:4) k(5:6)];
+    sim_data.cMat=Poly656Coef(sim_data.lims,K);
     sol = ode45(@(time,orientation) IntegrableInverseDynamics(cdpr_p,cdpr_v,...
         sim_data,i,time,orientation,sim_data.dt(i),k,geom_fun),[0 sim_data.dt(i)],...
         [sim_data.p(4:6,i);0;0;0],ut.ode45_options);

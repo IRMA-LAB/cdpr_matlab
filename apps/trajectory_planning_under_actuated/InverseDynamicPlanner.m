@@ -18,14 +18,24 @@ folder = '../../data';
 
 simulationData = struct();
 geometricFunction = @LineFunction;
-simulationData = NormalizedPoly7Coefficients(1,simulationData);
-simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,record,utilities);
-  
+simulationData = NormalizedPoly7Coefficients(1,simulationData); 
+simulationData.lims = [1/3;1/3];
+simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,record,utilities,geometricFunction);
+ 
+tic
 [outputDataRTR] = RestToRestCoefficients(cdpr_parameters,cdpr_variables,...
-     simulationData,geometricFunction,utilities,record);
+      simulationData,geometricFunction,utilities,record);
+tRTR = toc;
+tic
+[outputDataIS] = ShapedInverseSimulator(cdpr_parameters,cdpr_variables,...
+     simulationData,geometricFunction,utilities);
+tIS = toc;
+tic;
 [outputDataSTD] = StandardInverseSimulator(cdpr_parameters,cdpr_variables,...
      simulationData,geometricFunction,utilities);
+tSTD = toc; 
  
-DataLoggerStruct(outputDataRTR,folder,'InverseRTR',true,cdpr_parameters,cdpr_variables,record,utilities);
-DataLoggerStruct(outputDataSTD,folder,'InverseSTD',true,cdpr_parameters,cdpr_variables,record,utilities);
+DataLoggerStruct(outputDataRTR,folder,'InverseRTR',false,cdpr_parameters,cdpr_variables,record,utilities); 
+DataLoggerStruct(outputDataIS,folder,'InverseIS',false,cdpr_parameters,cdpr_variables,record,utilities);
+DataLoggerStruct(outputDataSTD,folder,'InverseSTD',false,cdpr_parameters,cdpr_variables,record,utilities);
  

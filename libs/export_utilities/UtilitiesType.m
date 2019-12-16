@@ -34,7 +34,7 @@ classdef UtilitiesType
             'StepTolerance',1e-6,'SpecifyObjectiveGradient',true);
         fmincon_options = optimoptions('fmincon','Algorithm','interior-point',...
             'FunctionTolerance',1e-8,'MaxFunctionEvaluation',1000000,...
-            'MaxIterations',1000000,'OptimalityTolerance',1e-8,'StepTolerance',1e-8);
+            'MaxIterations',1000000,'OptimalityTolerance',1e-2,'StepTolerance',1e-8,'UseParallel',true,'ConstraintTolerance',1e-8);
         huen_c = [0;1];
         huen_b = [1/2;1/2];
         huen_M = [0 0 ;
