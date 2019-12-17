@@ -11,6 +11,6 @@ for i = 1:n
 end
 K(4:6, 4:6) = K(4:6, 4:6) + Anti(cdpr_v.platform.ext_load(1:3)) *...
   Anti(cdpr_v.platform.pos_PG_glob);
-matrix = cdpr_v.underactuated_platform.geometric_orthogonal' * K;
 
+matrix = cdpr_v.underactuated_platform.geometric_orthogonal' * K;
 matrix(:, 4:end) = matrix(:, 4:end) * cdpr_v.platform.H_mat;
