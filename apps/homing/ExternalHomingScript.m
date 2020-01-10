@@ -1,18 +1,20 @@
 clear; close all; clc;
 
-addpath('../../config')
-addpath('../../data/workspace_files')
-addpath('../../libs/cdpr_model')
-addpath('../../libs/export_utilities')
-addpath('../../libs/numeric')
-addpath('../../libs/orientation_geometry')
-addpath('../../libs/under_actuated')
-addpath('../../libs/prototype_log_parser')
-addpath('../../libs/prototype_log_parser/msgs')
-folder = '../../data';
+homing_path = fileparts(matlab.desktop.editor.getActiveFilename);
+
+addpath(strcat(homing_path, '/../../config'))
+addpath(strcat(homing_path, '/../../data/workspace_files'))
+addpath(strcat(homing_path, '/../../libs/cdpr_model'))
+addpath(strcat(homing_path, '/../../libs/export_utilities'))
+addpath(strcat(homing_path, '/../../libs/numeric'))
+addpath(strcat(homing_path, '/../../libs/orientation_geometry'))
+addpath(strcat(homing_path, '/../../libs/under_actuated'))
+addpath(strcat(homing_path, '/../../libs/prototype_log_parser'))
+addpath(strcat(homing_path, '/../../libs/prototype_log_parser/msgs'))
+folder = strcat(homing_path, '/../../data');
 
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs, record, utilities] =...
-  LoadConfigAndInit("config_calib","Homing");
+  LoadConfigAndInit("Grab_prototype_33", "Homing");
 
 tension_limits = [40 100];
 start = SimulateGoToStartProcedureErroneous...
@@ -24,8 +26,8 @@ home = SimulateGoToStartProcedureIdeal...
 % making use of banal extimation of the workspace center (geometrical
 % property  of the robot) and acquired data. No need for user interaction.
 
-[imported_data_coarse, ~] = parseCableRobotLogFile('data.log');
-%[imported_data_coarse, ~] = parseCableRobotLogFile('/tmp/cable-robot-logs/data.log');
+% [imported_data_coarse, ~] = parseCableRobotLogFile('data.log');
+[imported_data_coarse, ~] = parseCableRobotLogFile('/tmp/cable-robot-logs/data.log');
 [delta_l, delta_sw] = Reparse(imported_data_coarse.actuator_status.values,...
   cdpr_parameters);
 init_guess = GenerateInitialGuess(cdpr_parameters, cdpr_variables, delta_l,...
@@ -43,5 +45,6 @@ s0 = sol(cdpr_parameters.n_cables + 1 : 2 * cdpr_parameters.n_cables, 1);
 
 j_struct.init_pose = pose0;
 json.startup
-json.write(j_struct, 'results.json')
-fprintf('Results dumped in %s\n', strcat(pwd, '/results.json'))
+ofilepath = strcat(homing_path, '/../../data/homing_results.json');
+json.write(j_struct, ofilepath)
+fprintf('Results dumped in %s\n', ofilepath)
