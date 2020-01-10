@@ -1,4 +1,4 @@
-function [out,pose] = SolveUnderActGeoStatWS(cdpr_p, cdpr_v, ut, tau_lim,...
+function [out, pose] = SolveUnderActGeoStatWS(cdpr_p, cdpr_v, ut, tau_lim,...
   out, pose, varargin)
 
 if (~isempty(varargin))
@@ -19,7 +19,7 @@ if (isempty(cdpr_v.tension_vector(cdpr_v.tension_vector > tau_lim(2)))...
     (cdpr_p.underactuated_platform,cdpr_v.geometric_jacobian);
   K_matrix = CalcStiffnessMatUnder(cdpr_v);
   [~, p] = chol(K_matrix);
-  if (p==0) % stable equilibrium
+  if (p == 0) % stable equilibrium
     cdpr_v.platform = cdpr_v.platform.UpdateMassMatrix(cdpr_p);
     M_matrix = CalcMassMatUnder(cdpr_v);
     [eigenvectors, eigenvalues_mat] = eig(K_matrix, M_matrix);
