@@ -1,6 +1,6 @@
 clear; close all; clc;
 
-homing_path = fileparts(matlab.desktop.editor.getActiveFilename);
+homing_path = fileparts(mfilename('fullpath'));
 
 addpath(strcat(homing_path, '/../../config'))
 addpath(strcat(homing_path, '/../../data/workspace_files'))
@@ -43,7 +43,7 @@ s0 = sol(cdpr_parameters.n_cables + 1 : 2 * cdpr_parameters.n_cables, 1);
   (cdpr_parameters, l0, s0, v, record), start.pose, [], [],...
   utilities.lsqnonlin_options_grad);
 
-j_struct.init_pose = pose0;
+j_struct.init_pose = pose0';
 json.startup
 ofilepath = strcat(homing_path, '/../../data/homing_results.json');
 json.write(j_struct, ofilepath)
