@@ -4,3 +4,6 @@
 # Ignored folders
 apps/calibration_identification
 data/videos
+
+# Ignored files
+data/homing_results.json
