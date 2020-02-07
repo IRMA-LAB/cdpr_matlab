@@ -8,7 +8,7 @@ function cdpr_v = UnderactuatedDynamicsResolution(cdpr_v,ucdpr_p)
 %
 %   CDPR_V is a structure containing time dependent variables of the cdpr.
 
-cdpr_v.underactuated_platform = CalcUnactuatedAcceleration(cdpr_v.underactuated_platform);
+cdpr_v.underactuated_platform = CalcUnactuatedAcceleration(cdpr_v.underactuated_platform,ucdpr_p);
 cdpr_v.platform.pose_d_2 = cdpr_v.underactuated_platform.RecomposeVars(2,ucdpr_p);
 cdpr_v = CalcCablesDynamicTensionStateSpace(cdpr_v);
 

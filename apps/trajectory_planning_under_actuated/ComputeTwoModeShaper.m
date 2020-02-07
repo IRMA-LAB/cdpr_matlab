@@ -1,7 +1,7 @@
 function [S,index] = ComputeTwoModeShaper(data,ind,shaper_order)
 
-    period_max = (max(data.info(ind).nat_period)+max(data.info(ind+1).nat_period))/2;
-    period_min = (min(data.info(ind).nat_period)+min(data.info(ind+1).nat_period))/2;
+    period_max = min([max(data.info(ind).nat_period);max(data.info(ind+1).nat_period)]);
+    period_min = min([min(data.info(ind).nat_period);min(data.info(ind+1).nat_period)]);
     
     [shaper_max,shaperL_max] = ZeroVibrationInputShaping(shaper_order,period_max);
     [shaper_min,shaperL_min] = ZeroVibrationInputShaping(shaper_order,period_min);

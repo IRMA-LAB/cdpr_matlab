@@ -2,12 +2,12 @@ function vect = IntegrableInverseDynamics(cdpr_p,cdpr_v,...
     sim_data,index,time,un_act_vars,geom_fun)
 
 % Trajectory settings
-pStart = sim_data.p(1:cdpr_p.n_cables,index);
-pEnd = sim_data.p(1:cdpr_p.n_cables,index+1);
+pStart = sim_data.p(cdpr_p.underactuated_platform.actuated_mask,index);
+pEnd = sim_data.p(cdpr_p.underactuated_platform.actuated_mask,index+1);
 %normalizedTime = time/sim_data.dt(index);
 normalizedTime = time/sim_data.dt(index);
 act_vars = sim_data.motion_law_function(sim_data,normalizedTime,...
-    geom_fun,pStart,pEnd,sim_data.dt(index));
+    geom_fun,pStart,pEnd,sim_data.dt(index),index);
 
 % Coordinate manipulations
 cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.SetVars(0,act_vars(1,:)',...
@@ -29,7 +29,7 @@ cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateDynamicsStat
 cdpr_v = UnderactuatedDynamicsResolution(cdpr_v,cdpr_p.underactuated_platform);
 
 % Assignment of the state derivative
-vect(1:3,1) = cdpr_v.underactuated_platform.unactuated_deriv;
-vect(4:6,1) = cdpr_v.underactuated_platform.unactuated_deriv_2;
+vect(1:cdpr_p.pose_dim-cdpr_p.n_cables,1) = cdpr_v.underactuated_platform.unactuated_deriv;
+vect(cdpr_p.pose_dim-cdpr_p.n_cables+1:2*(cdpr_p.pose_dim-cdpr_p.n_cables),1) = cdpr_v.underactuated_platform.unactuated_deriv_2;
 
 end

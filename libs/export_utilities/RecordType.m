@@ -28,11 +28,27 @@ classdef RecordType
                 end
             end
             hold on
-            max_x = max(limits(1,:)); min_x = min(limits(1,:)); incr_x = 0.2*(max_x - min_x);
-            lim_x = [((min_x-incr_x)*10) ((max_x+incr_x)*10)]./10; l_x = (lim_x(2)-lim_x(1)); tickSpace_x = l_x/10;
-            max_y = max(limits(2,:)); min_y = min(limits(2,:)); incr_y = 0.2*(max_y - min_y);
+            max_x = max(limits(1,:)); min_x = min(limits(1,:));
+            if (max_x==min_x)
+                max_x = max_x+0.01;
+                min_x = min_x-0.01;
+            end
+            incr_x = 0.2*(max_x - min_x);
+            lim_x = [((min_x-incr_x)*10) ((max_x+incr_x)*10)]./10; 
+            l_x = (lim_x(2)-lim_x(1)); tickSpace_x = l_x/10;
+            max_y = max(limits(2,:)); min_y = min(limits(2,:));
+            if (max_y==min_y)
+                max_y = max_y+0.01;
+                min_y = min_y-0.01;
+            end
+            incr_y = 0.2*(max_y - min_y);
             lim_y = [((min_y-incr_y)*10) ((max_y+incr_y)*10)]./10; l_y = (lim_y(2)-lim_y(1)); tickSpace_y = l_y/10;
-            max_z = max(limits(3,:)); min_z = min(limits(3,:)); middle_z = (max_z - min_z)/2;
+            max_z = max(limits(3,:)); min_z = min(limits(3,:)); 
+            if (max_z==min_z)
+                max_z = max_z+0.01;
+                min_z = min_z-0.01;
+            end
+            middle_z = (max_z - min_z)/2;
             max_l = max([lim_x lim_y]); lim_z = [((middle_z-max_l)*15) (abs(max_z)*15)]./10; l_z = (lim_z(2)-lim_z(1));
             tickSpace_z = l_z/10;
             

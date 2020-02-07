@@ -34,12 +34,15 @@ classdef UnderActuatedPar
             % CDPRVAR defines the object CABLE containing an object for each
             % cable that stores time dependent variables of the cable and its
             % swivel pulley.
-            
+            act_count = 0;
+            unact_count = 0;
             for i=1:obj.pose_dim
                 if (mask(i)==1)
-                    obj.actuated_mask = i;
+                    act_count = act_count+1;
+                    obj.actuated_mask(act_count) = i;
                 else
-                    obj.unactuated_mask = i;
+                    unact_count = unact_count+1;
+                    obj.unactuated_mask(unact_count) = i;
                 end
             end
         end

@@ -46,6 +46,7 @@ classdef CdprParameter
       end  
       if (obj.n_cables<6)
       obj.underactuated_platform = UnderActuatedPar(obj.n_cables,obj.pose_dim);
+      obj.underactuated_platform = obj.underactuated_platform.SetMask(p.platform.actuation_mask);
       end
       obj.workspace_center = workspace_center./3;
       obj.workspace_center(3) = 0;

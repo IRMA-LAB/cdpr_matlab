@@ -59,8 +59,10 @@ classdef UnderActuatedVar
     app2 = eye(m-n);
     for i = 1:m-n
         app1(:,i) = linsolve(-obj.geometric_jacobian_a,obj.geometric_jacobian_u(:,i));
-        v = zeros(n,1); v(i) = 1;
-        app3(:,i) = linsolve(obj.geometric_jacobian_a,v);
+    end
+    for i=1:n
+       v = zeros(n,1); v(i) = 1;
+        app3(:,i) = linsolve(obj.geometric_jacobian_a,v); 
     end
     obj.geometric_orthogonal(par.actuated_mask,:) = app1;
     obj.geometric_orthogonal(par.unactuated_mask,:) = app2;
@@ -83,8 +85,11 @@ classdef UnderActuatedVar
     app2 = eye(m-n);
     for i = 1:m-n
         app1(:,i) = linsolve(-obj.analitic_jacobian_a,obj.analitic_jacobian_u(:,i));
-        v = zeros(n,1); v(i) = 1;
-        app3(:,i) = linsolve(obj.analitic_jacobian_a,v);
+
+    end
+    for i=1:n
+       v = zeros(n,1); v(i) = 1;
+        app3(:,i) = linsolve(obj.analitic_jacobian_a,v); 
     end
     obj.analitic_orthogonal(par.actuated_mask,:) = app1;
     obj.analitic_orthogonal(par.unactuated_mask,:) = app2;

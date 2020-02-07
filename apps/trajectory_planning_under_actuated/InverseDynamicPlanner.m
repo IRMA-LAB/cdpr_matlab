@@ -11,21 +11,26 @@ addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
 folder = '../../data';
 
+% [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
+%   LoadConfigAndInit("Grab_prototype_33","DynamicPlanning");
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("Grab_prototype_33","DynamicPlanning");
+  LoadConfigAndInit("Grab_prototype_33","DynamicPlanning_Grab_prototype_33");
 
 % fare la cartella output per la roba enorme con dentro un .keep
 
 simulationData = struct();
 geometricFunction = @LineFunction;
-simulationData = NormalizedPoly7Coefficients(1,simulationData); 
-simulationData.lims = [1/3;1/3];
-simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,record,utilities,geometricFunction);
+simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,...
+    cdpr_variables,record,utilities,geometricFunction);
  
-tic
-[outputDataRTR] = RestToRestCoefficients(cdpr_parameters,cdpr_variables,...
-      simulationData,geometricFunction,utilities,record);
-tRTR = toc;
+% tic
+% [outputDataRTR] = RestToRestCoefficients(cdpr_parameters,cdpr_variables,...
+%       simulationData,geometricFunction,utilities,record);
+% tRTR = toc;
+%  tic
+% [outputDataRTRMT] = RestToRestCoefficientsMinimumTime(cdpr_parameters,cdpr_variables,...
+%       simulationData,geometricFunction,utilities,record);
+% tRTRMT = toc;
 tic
 [outputDataIS] = ShapedInverseSimulator(cdpr_parameters,cdpr_variables,...
      simulationData,geometricFunction,utilities);
@@ -35,7 +40,8 @@ tic;
      simulationData,geometricFunction,utilities);
 tSTD = toc; 
  
-DataLoggerStruct(outputDataRTR,folder,'InverseRTR',false,cdpr_parameters,cdpr_variables,record,utilities); 
-DataLoggerStruct(outputDataIS,folder,'InverseIS',false,cdpr_parameters,cdpr_variables,record,utilities);
-DataLoggerStruct(outputDataSTD,folder,'InverseSTD',false,cdpr_parameters,cdpr_variables,record,utilities);
+% DataLoggerStruct(outputDataRTR,folder,'InverseRTR',false,cdpr_parameters,cdpr_variables,record,utilities);
+% DataLoggerStruct(outputDataRTRMT,folder,'InverseRTRMT',true,cdpr_parameters,cdpr_variables,record,utilities);
+DataLoggerStruct(outputDataIS,folder,'InverseIS',true,cdpr_parameters,cdpr_variables,record,utilities);
+DataLoggerStruct(outputDataSTD,folder,'InverseSTD',true,cdpr_parameters,cdpr_variables,record,utilities);
  

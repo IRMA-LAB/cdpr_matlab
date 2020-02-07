@@ -23,8 +23,8 @@ vectT(5:6) = BC0;
 vectT(7:8) = BC1;
 
 c = linsolve(matT,vectT);
-matC = zeros(6,3);
-matC(:,1) = [c(1:3);0;0;0];
-matC(:,2) = [c(4:5);0;0;0;0];
-matC(:,3) = [c(6:8);0;0;0];
+matC = zeros(7,3);
+matC(:,1) = [c(1:3);0;0;0;0];
+matC(:,2) = [c(4:5);0;0;0;0;0];
+matC(:,3) = [c(6:8);0;0;0;0];
 end

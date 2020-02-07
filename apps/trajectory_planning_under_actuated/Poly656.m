@@ -23,4 +23,9 @@ else
     val(3,1) = matT(3,:)*matC(:,3);
 end
 
+if (t<0 || t>1)
+    val(2,1) = 0;
+    val(3,1) = 0;
+end
+
 end
