@@ -4,7 +4,7 @@ n_arg_opt = length(varargin);
 
 if (n_arg_opt>0)
       add_wp_info =  varargin{1};
-      ws_type = varargin{2};
+      %ws_type = varargin{2};
 end
 
 if (type == 1) % translational
@@ -32,7 +32,7 @@ else  % orientational
     
   else % completely actuated
        out = CalcOrientationWorkSpace(cdpr_p,cdpr_v,tau_limits,add_wp_info);
-       DisplayAndSaveWorkspace(out,2,folder,rec);
+       DisplayAndSaveWorkspace(out,type,folder,rec);
   end
    
 end
