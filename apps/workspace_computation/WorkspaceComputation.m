@@ -25,6 +25,6 @@ LoadConfigAndInit("Greenline_prototype","Greenline_prototype_WS");
   LoadConfigAndInit("Greenline_prototype","Greenline_WS");
 
     tension_limits = [0.1;10];
-    position = [0;0;-0.2];
+    position = [0;0;-0.3];
     cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
-        utilities,cdpr_outputs,2,tension_limits,folder,record,3,position);
+        utilities,cdpr_outputs,3,tension_limits,folder,record,3,position);
