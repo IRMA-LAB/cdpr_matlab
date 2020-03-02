@@ -19,18 +19,22 @@ if ((~any(isnan(cdpr_v.tension_vector))) && isempty(cdpr_v.tension_vector(cdpr_v
     
     Kr = cdpr_v.geometric_jacobian(:,4:6);
     Kp = cdpr_v.geometric_jacobian(:,1:3);
-    K = [Kr Kp];
+    K = [Kp Kr];
+    J = MyInv(K);
     L = [K' -K']';
     E = eye(6);
     Pp = eye(6)-Kp*MyInv(Kp'*Kp)*Kp';
     Pr = eye(6)-Kr*MyInv(Kr'*Kr)*Kr';
-    out.manip(1,out.counter) = sqrt(norm(inv(Kr'*Pp*Kr),2));
-    out.manip2(1,out.counter) = sqrt(norm(inv(Kp'*Pr*Kp),2));
+    out.manipR2(1,out.counter) = sqrt(norm(inv(Kr'*Pp*Kr),2));
+    out.manipP2(1,out.counter) = sqrt(norm(inv(Kp'*Pr*Kp),2));
 %     for i=1:6
 %     x(:,i) = linprog(-E(:,i),L,ones(12,1));
+%     sigma(1,i) = E(:,i)'*x(:,i);
 %     end
-%     out.manip3(1,out.counter) = max(x(1,1:3));
-%     out.manip4(1,out.counter) = max(x(1,4:6));
+%     out.manipPinf(1,out.counter) = max(abs(sigma(1,1:3)));
+%     out.manipRinf(1,out.counter) = max(abs(sigma(1,4:6)));
+    out.manipPSer(1,out.counter) = norm(J(1:3,:),inf);
+    out.manipRSer(1,out.counter) = norm(J(4:6,:),inf);
     
 %     L = [cdpr_v.geometric_jacobian' -cdpr_v.geometric_jacobian']';
 %     for ii = 1:3
