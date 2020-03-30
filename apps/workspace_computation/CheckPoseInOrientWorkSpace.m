@@ -27,23 +27,12 @@ if ((~any(isnan(cdpr_v.tension_vector))) && isempty(cdpr_v.tension_vector(cdpr_v
     E = eye(6);
     Pp = eye(6)-Kp*MyInv(Kp'*Kp)*Kp';
     Pr = eye(6)-Kr*MyInv(Kr'*Kr)*Kr';
-    out.manip(1,out.counter) = sqrt(norm(inv(Kr'*Pp*Kr),2));
-    out.manip2(1,out.counter) = sqrt(norm(inv(Kp'*Pr*Kp),2));
-%     for i=1:6
-%     x(:,i) = linprog(-E(:,i),L,ones(12,1));
-%     t(i,1) = E(:,i)'* x(:,i);
-%     end
-%     out.manipP(1,out.counter) = max(t(1:3));
-%     out.manipR(1,out.counter) = max(t(4:6));
+    out.manipR2(1,out.counter) = sqrt(norm(inv(Kr'*Pp*Kr),2));
+    out.manipP2(1,out.counter) = sqrt(norm(inv(Kp'*Pr*Kp),2));
     out.manipP(1,out.counter) = norm(Jp,Inf);
     out.manipR(1,out.counter) = norm(Jr,Inf);
-%     L = [cdpr_v.geometric_jacobian' -cdpr_v.geometric_jacobian']';
-%     for ii = 1:3
-%         v = zeros(6,1); v(ii+3) = 1;
-%         [~,fval(ii)] =  linprog(-v,L,ones(length(L),1),[],[],[],[],options);
-%         fval(ii) = -fval(ii);
-%     end
-%     out.manip3(1,out.counter) = max(fval);
+    out.manipPSer(1,out.counter) = norm(J(1:3,:),inf);
+    out.manipRSer(1,out.counter) = norm(J(4:6,:),inf);
 end
 
 end
