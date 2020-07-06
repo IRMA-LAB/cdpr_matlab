@@ -14,9 +14,9 @@ folder = '../../data';
   LoadConfigAndInit("Grab_prototype_33","DynamicPlanning"); 
 
 index = randi(ws_data.counter);
-scale_fact_pos = 15; %max amplitude degree
+scale_fact_pos = 2; %max amplitude degree
 scale_fact_vel = 0; %max amplitude degree/s
-t_end = 1; %sim time
+t_end = 10; %sim time
 linearized_data = ExtractInfoFromWS(cdpr_variables,cdpr_parameters,ws_data,...
     utilities,record,index,scale_fact_pos,scale_fact_vel);
 i = 0;
