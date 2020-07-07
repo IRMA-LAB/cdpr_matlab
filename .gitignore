@@ -7,3 +7,4 @@ data/videos
 
 # Ignored files
 data/homing_results.json
+*.asv
