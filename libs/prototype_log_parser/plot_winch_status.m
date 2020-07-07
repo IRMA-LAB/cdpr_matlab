@@ -20,23 +20,10 @@ for i = 1:num_actuators
     sorted_ts(i, :) = data.winch_status.timestamp(idx(1:MSG_NUM));
 end
 
-MAX_STD = 1;
-BUFFER_SIZE = 30;
-TOUCH_TIME = 134; %SEC
-idx = find(sorted_ts(1,:) > TOUCH_TIME);
-offset = idx(1);
-for j = (BUFFER_SIZE + offset):MSG_NUM
-    s = std(pulley_enc_mat(:, (j - BUFFER_SIZE):j), 0, 2);
-    if all( s < MAX_STD)
-        settling_time = sorted_ts(1, j)
-        break
-    end
-end
-
 %% Plot pulley encoder values
 figure('units','normalized','outerposition',[0 0 1 1])
 for i = 1:num_actuators
-    subplot(3,1,i)
+    subplot(num_actuators,1,i)
     plot(sorted_ts(i,:), pulley_enc_mat(i,:))
     hold on
     plot([TOUCH_TIME TOUCH_TIME], ylim, '-.')
@@ -51,7 +38,7 @@ end
 %% Plot torques
 figure('units','normalized','outerposition',[0 0 1 1])
 for i = 1:num_actuators
-    subplot(3,1,i)
+    subplot(num_actuators,1,i)
     plot(sorted_ts(i,:), torques_mat(i,:))
     grid on
     title(sprintf('Actuator #%d torques', actuators_id(i)))

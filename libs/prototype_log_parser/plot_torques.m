@@ -24,7 +24,7 @@ end
 %% Plot torques
 figure('units','normalized','outerposition',[0 0 1 1])
 for i = 1:num_actuators
-    subplot(3,1,i)
+    subplot(num_actuators,1,i)
     plot(sorted_ts(i,:), torques_mat(i,:))
     grid on
     title(sprintf('Actuator #%d torques', actuators_id(i)))
@@ -34,7 +34,7 @@ end
 %% Plot pulley encoder values
 figure()
 for i = 1:num_actuators
-    subplot(3,1,i)
+    subplot(num_actuators,1,i)
     plot(sorted_ts(i,:), pulley_enc_mat(i,:))
     grid on
     title(sprintf('Actuator #%d encoder values', actuators_id(i)))
@@ -44,7 +44,7 @@ end
 %% Plot pulley angles
 figure()
 for i = 1:num_actuators
-    subplot(3,1,i)
+    subplot(num_actuators,1,i)
     plot(sorted_ts(i,:), pulley_angle_mat(i,:))
     grid on
     title(sprintf('Actuator #%d pulley angles', actuators_id(i)))
