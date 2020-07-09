@@ -23,8 +23,8 @@ cable_v = CalcCableVectors(cable_p.swivel_pulley_r,cable_p.vers_k,cable_v);
 cable_v.complete_length = CalcCableLen(cable_p.swivel_pulley_r,...
   cable_v.tan_ang,cable_v.pos_BA_glob);
 
-[cable_v.geometric_jacobian_row, cable_v.analitic_jacobian_row] = ...
-    CalcPlatformJacobianRow(cable_v.vers_t,cable_v.pos_PA_glob,platform_v.H_mat);
+[cable_v.geometric_jacobian_col, cable_v.analitic_jacobian_col] = ...
+    CalcPlatformJacobianCol(cable_v.vers_t,cable_v.pos_PA_glob,platform_v.H_mat);
 
 
 end

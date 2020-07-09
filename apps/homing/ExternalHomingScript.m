@@ -8,18 +8,19 @@ addpath('../../libs/export_utilities')
 addpath('../../libs/numeric')
 addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
+addpath('../../libs/over_actuated')
 addpath('../../libs/prototype_log_parser')
 addpath('../../libs/prototype_log_parser/msgs')
 folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("config_calib","Homing");
+  LoadConfigAndInit("Grab_prototype_44","HomingTest44");
+homing_info = LoadHomingInfo("Homing_info");
 
-tension_limits = [40 100];
 start = SimulateGoToStartProcedureErroneous...
-    (cdpr_parameters, cdpr_variables,ws_parameters,record,utilities,tension_limits);
+    (cdpr_parameters, cdpr_variables,ws_parameters,record,utilities,homing_info.tension_limits);
 home = SimulateGoToStartProcedureIdeal...
-    (cdpr_parameters, cdpr_variables,start.pose,record,utilities,tension_limits);
+    (cdpr_parameters, cdpr_variables,start.pose,record,utilities,homing_info.tension_limits);
 
 % Here automatic initial guess for the homing algorithm is generated,
 % making use of banal extimation of the workspace center (geometrical

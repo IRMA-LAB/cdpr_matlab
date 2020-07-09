@@ -1,5 +1,5 @@
 classdef RotationParametrizations
     enumeration
-        EULER_ZYZ, TAYT_BRYAN, RPY, TILT_TORSION, QUATERNION
+        EULER_ZYZ, TAIT_BRYAN, RPY, TILT_TORSION, QUATERNION
     end
 end

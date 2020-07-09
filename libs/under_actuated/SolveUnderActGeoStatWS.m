@@ -5,25 +5,26 @@ if (~isempty(varargin))
 end
 
 cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.ExtractVars(cdpr_p.underactuated_platform,0,pose);
-cdpr_v.underactuated_platform.unactuated = fsolve(@(v) FunGsNoCheck(cdpr_p,cdpr_v.underactuated_platform.actuated,v),...
-    cdpr_v.underactuated_platform.unactuated,ut.fsolve_options_grad);
+[cdpr_v.underactuated_platform.pose_P(cdpr_p.n_cables+1:end),fval] = fsolve(@(v) FunGsNoCheck(cdpr_p,cdpr_v.underactuated_platform.pose_P(1:cdpr_p.n_cables),v),...
+    cdpr_v.underactuated_platform.pose_P(cdpr_p.n_cables+1:end),ut.fsolve_options_grad);
 
-if norm(FunGsNoCheck(cdpr_p,cdpr_v.underactuated_platform.actuated,cdpr_v.underactuated_platform.unactuated ))<0.001
+if norm(fval)<0.001
     
     pose_n = cdpr_v.underactuated_platform.RecomposeVars(0,cdpr_p.underactuated_platform);
     pose_n = NormalizeOrientation(cdpr_p,pose_n);
     cdpr_v = UpdateIKZeroOrd(pose_n(1:3),pose_n(4:end),cdpr_p,cdpr_v);
     cdpr_v = CalcExternalLoads(cdpr_v,cdpr_p);
     cdpr_v = CalcCablesStaticTensionNoCheck(cdpr_v);
-    
     if(isempty(cdpr_v.tension_vector(cdpr_v.tension_vector>tau_lim(2)))...
             && isempty(cdpr_v.tension_vector(cdpr_v.tension_vector<tau_lim(1))))
-        cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateGeometricJacobians...
-            (cdpr_p.underactuated_platform,cdpr_v.geometric_jacobian);
+        cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateJacobians...
+            (cdpr_p.underactuated_platform,cdpr_v.analitic_jacobian,cdpr_v.D_mat);
         K_matrix = CalcStiffnessMatUnder(cdpr_v);
         d = eig(K_matrix);
         isposdef = all(d) > 0;
+        
         if (isposdef) % stable equilibrium
+          %rec.SetFrame(cdpr_v,cdpr_p);
             cdpr_v.platform = cdpr_v.platform.UpdateMassMatrix(cdpr_p);
             M_matrix = CalcMassMatUnder(cdpr_v);
             [eigenvectors,eigenvalues_mat] = eig(K_matrix,M_matrix);

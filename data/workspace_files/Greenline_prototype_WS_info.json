@@ -1,0 +1,8 @@
+{
+  "tension_limits" : [[0],[100]],
+  "p" : [[0],[0],[-0.2]],
+  "workspace_type" : "ORIENTATION",
+  "display_criteria" : "ORIENTATION_SENSITIVITY",
+  "mesh_divider" : 20,
+  "display_grid_divider" : 10,
+}

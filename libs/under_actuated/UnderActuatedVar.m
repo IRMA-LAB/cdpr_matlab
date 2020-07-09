@@ -6,140 +6,129 @@ classdef UnderActuatedVar
 %     
   properties
     
-    actuated;
-    unactuated;
+    pose_P;
+    pose_P_d;
+    pose_P_dd;
     
-    geometric_jacobian_a;%
-    geometric_jacobian_u;%
+    free_twist;
+    controlled_twist;
+%     actuated;
+%     unactuated;
+%     
+%     geometric_jacobian_a;%
+%     geometric_jacobian_u;%
+%     geometric_orthogonal;
+%     geometric_parallel;
+%     geometric_tau;
+%     analitic_jacobian_a;%
+%     analitic_jacobian_u;%
+    analitic_jacobian_P;
+
     geometric_orthogonal;
     geometric_parallel;
-    geometric_tau;
-    analitic_jacobian_a;%
-    analitic_jacobian_u;%
     analitic_orthogonal;
     analitic_parallel;
-    analitic_tau
     
-    actuated_deriv;
-    unactuated_deriv;
+    analitic_orthogonal_P;
+    analitic_parallel_P;
     
-    actuated_deriv_2;
-    unactuated_deriv_2;
+    geometric_orthogonal_d;
+    geometric_parallel_d;
+    analitic_orthogonal_d;
+    analitic_parallel_d;
     
-    mass_matrix_global_a;
-    mass_matrix_global_u;
+    analitic_orthogonal_P_d;
+    analitic_parallel_P_d;
     
-    mass_matrix_global_ss_a;
-    mass_matrix_global_ss_u;
-
-    total_load_a;%
-    total_load_u;%
-    
-    total_load_ss_a;%
-    total_load_ss_u;%
-    
-    external_load_a;%
-    external_load_u;%
-    
-    external_load_ss_a;%
-    external_load_ss_u;%
-    
-    Gamma_mat
+    mass_matrix_q;
+    C_matrix_q;
+    total_load_q;
 
   end
   methods
-    
-    function obj = UpdateGeometricJacobians(obj,par,Jg) 
-    obj.geometric_jacobian_a = Jg(:,par.actuated_mask);
-    obj.geometric_jacobian_u = Jg(:,par.unactuated_mask);
-    [n,m] = size(Jg);
-    
-    app1 = zeros(n,m-n);
-    app3 = zeros(n,n);
-    app2 = eye(m-n);
-    for i = 1:m-n
-        app1(:,i) = linsolve(-obj.geometric_jacobian_a,obj.geometric_jacobian_u(:,i));
-    end
-    for i=1:n
-       v = zeros(n,1); v(i) = 1;
-        app3(:,i) = linsolve(obj.geometric_jacobian_a,v); 
-    end
-    obj.geometric_orthogonal(par.actuated_mask,:) = app1;
-    obj.geometric_orthogonal(par.unactuated_mask,:) = app2;
-    obj.geometric_parallel(par.actuated_mask,:) = app3;
-    obj.geometric_parallel(par.unactuated_mask,:) = zeros(m-n,n);
-    end
-    
-    function obj = UpdateGeometricTauJacobian(obj)
-       obj.geometric_tau =  obj.geometric_parallel'*linsolve...
-           (obj.geometric_orthogonal*obj.geometric_orthogonal',obj.geometric_orthogonal);
-    end
-    
-    function obj = UpdateAnaliticJacobians(obj,par,Ja) 
-    obj.analitic_jacobian_a = Ja(:,par.actuated_mask);
-    obj.analitic_jacobian_u = Ja(:,par.unactuated_mask);
-    [n,m] = size(Ja);
-    
-    app1 = zeros(n,m-n);
-    app3 = zeros(n,n);
-    app2 = eye(m-n);
-    for i = 1:m-n
-        app1(:,i) = linsolve(-obj.analitic_jacobian_a,obj.analitic_jacobian_u(:,i));
+      function obj = UpdateJacobians(obj,par,Ja,D)
+          obj.analitic_jacobian_P = par.permutation_matrix*Ja;
+          obj.analitic_orthogonal_P = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',obj.analitic_jacobian_P(par.n_cables+1:end,:)');eye(par.pose_dim-par.n_cables)];
+          obj.analitic_orthogonal = par.permutation_matrix'*obj.analitic_orthogonal_P;
+          obj.geometric_orthogonal = D*obj.analitic_orthogonal;
+          obj.analitic_parallel_P = [inv(obj.analitic_jacobian_P(1:par.n_cables,:)');zeros(par.pose_dim-par.n_cables,par.n_cables)];
+          obj.analitic_parallel = par.permutation_matrix'*obj.analitic_parallel_P;
+          obj.geometric_parallel = D*obj.analitic_parallel;
+      end
+      function obj = UpdateTwists(obj,par,pose_d,l_d)
+          obj.ExtractVars(par,1,pose_d);
+          obj.free_twist = obj.geometric_orthogonal*obj.pose_P_d(par.n_cables:end);
+          obj.controlled_twist = obj.geometric_parallel*l_d;
+      end
+      function obj = UpdateJacobiansD(obj,par,Ja_D,D_d)
+          J_P_d = par.permutation_matrix*Ja_D;
+          obj.analitic_orthogonal_P_d = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',...
+              J_P_d(1:par.n_cables,:)'*obj.analitic_orthogonal_P(1:par.n_cables,:)...
+              +J_P_d(par.n_cables+1:end,:)');zeros(par.pose_dim-par.n_cables)];
+          obj.analitic_orthogonal_d = par.permutation_matrix'*obj.analitic_orthogonal_P_d;
+          obj.geometric_orthogonal_d = D*obj.analitic_orthogonal_d+D_d*obj.analitic_orthogonal;
+          
+          obj.analitic_parallel_P_d = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',...
+              J_P_d(1:par.n_cables,:)'*obj.analitic_parallel_P(1:par.n_cables,:));zeros(par.pose_dim-par.n_cables,par.n_cables)];
+          obj.analitic_parallel_d = par.permutation_matrix'*obj.analitic_parallel_P_d;
+          obj.geometric_parallel = D*obj.analitic_parallel_d+D_d*obj.analitic_parallel;
+      end
 
-    end
-    for i=1:n
-       v = zeros(n,1); v(i) = 1;
-        app3(:,i) = linsolve(obj.analitic_jacobian_a,v); 
-    end
-    obj.analitic_orthogonal(par.actuated_mask,:) = app1;
-    obj.analitic_orthogonal(par.unactuated_mask,:) = app2;
-    obj.analitic_parallel(par.actuated_mask,:) = app3;
-    obj.analitic_parallel(par.unactuated_mask,:) = zeros(m-n,n);
-    end
     
-    function obj = UpdateAnaliticTauJacobian(obj)
-       obj.analitic_tau =  obj.analitic_parallel'*linsolve...
-           (obj.analitic_orthogonal*obj.analitic_orthogonal',obj.analitic_orthogonal);
-    end
-    
-    function obj = UpdateDynamics(obj,par,J,M,l)
+    function obj = UpdateDynamics(obj,par,Ja,Ja_d,D,D_d,M,C,f)
      
-        obj = UpdateGeometricJacobians(obj,par,J); 
+        obj.UpdateJacobians(par,Ja,D);
+        obj.UpdateJacobiansD(par,Ja_d,D_d);
+        Chi = [obj.geometric_parallel obj.geometric_orthogonal];
+        obj.mass_matrix_q = Chi'*M*Chi;
+        obj.C_matrix_q = Chi'*(M*[obj.geometric_parallel_d obj.geometric_orthogonal_d]+C*Chi);
+        obj.total_load_q = -Chi'*f;
         
-        obj.mass_matrix_global_a = M(:,par.actuated_mask);
-        obj.mass_matrix_global_u = M(:,par.unactuated_mask);
-
-        obj.total_load_a = l(par.actuated_mask);%
-        obj.total_load_u = l(par.unactuated_mask);%
-    
     end
     
-    function obj = UpdateStatics(obj,par,J,l)
+    function obj = UpdateStatics(obj,par,Ja,D,f)
      
-        obj = UpdateGeometricJacobians(obj,par,J); 
-
-        obj.external_load_a= l(par.actuated_mask);%
-        obj.external_load_u= l(par.unactuated_mask);%
+        obj = obj.UpdateJacobians(par,Ja,D);
+        Chi = [obj.geometric_parallel obj.geometric_orthogonal];
+        obj.total_load_q = -Chi'*f;
     
     end
     
-    function obj = UpdateDynamicsStateSpace(obj,par,J,M,l)
-
-        obj = UpdateAnaliticJacobians(obj,par,J); 
+    function obj = UpdateMassMatrix(obj,M)
+     
+        Chi = [obj.geometric_parallel obj.geometric_orthogonal];
+        obj.mass_matrix_q = Chi'*M*Chi;
+    
+    end
+    
+    function obj = UpdateCMatrix(obj,M,C)
+     
+        Chi = [obj.geometric_parallel obj.geometric_orthogonal];
+        obj.C_matrix_q = Chi'*(M*[obj.geometric_parallel_d obj.geometric_orthogonal_d]+C*Chi);
+    
+    end
+    
+    function obj = UpdateLoad(obj,f)
+     
+        Chi = [obj.geometric_parallel obj.geometric_orthogonal];
+        obj.total_load_q = -Chi'*f;
+    
+    end
+    
+    function [tau,constr] = CalcStaticTension(obj,par)
+     
+        tau = -obj.total_load_q(1:par.n_cables);
+        constr = -obj.total_load_q(par.n_cables+1:end);
+    
+    end
+    
+    function [tau,constr] = CalcDynamicTension(obj,par,l_d,l_dd)
+     
+        v = obj.mass_matrix_q*[l_dd;obj.pose_P_dd(par.n_cables:end)]...
+            +obj.C_matrix_q*[l_d;obj.pose_P_d(par.n_cables:end)]+obj.total_load_q;
         
-        obj.mass_matrix_global_ss_a = M(:,par.actuated_mask);
-        obj.mass_matrix_global_ss_u = M(:,par.unactuated_mask);
-
-        obj.total_load_ss_a = l(par.actuated_mask);%
-        obj.total_load_ss_u = l(par.unactuated_mask);%
-    end
-    
-    function obj = UpdateStaticsStateSpace(obj,par,J,l)
-     
-        obj = UpdateAnaliticJacobians(obj,par,J); 
-
-        obj.external_load_ss_a= l(par.actuated_mask);%
-        obj.external_load_ss_u= l(par.unactuated_mask);%
+        tau = -v(1:par.n_cables);
+        constr = v(par.n_cables:end);
     
     end
     
@@ -147,56 +136,41 @@ classdef UnderActuatedVar
         
         switch order
             case 0     
-                obj.actuated = var(par.actuated_mask);
-                obj.unactuated = var(par.unactuated_mask);
+                obj.pose_P = par.permutation_matrix*var;
             case 1
-                obj.actuated_deriv = var(par.actuated_mask);
-                obj.unactuated_deriv = var(par.unactuated_mask);
+                obj.pose_P_d = par.permutation_matrix*var;
             case 2
-                obj.actuated_deriv_2 = var(par.actuated_mask);
-                obj.unactuated_deriv_2 = var(par.unactuated_mask);
+                obj.pose_P_dd = par.permutation_matrix*var;
         end
 
     end
     
     function obj = SetVars(obj,order,var_act,var_un_act)
-        
+           
         switch order
             case 0     
-                obj.actuated = var_act;
-                obj.unactuated = var_un_act;
+                obj.pose_P = [var_act;var_un_act];
             case 1
-                obj.actuated_deriv = var_act;
-                obj.unactuated_deriv = var_un_act;
+                obj.pose_P_d = [var_act;var_un_act];
             case 2
-                obj.actuated_deriv_2 = var_act;
-                obj.unactuated_deriv_2 = var_un_act;
+                obj.pose_P_dd = [var_act;var_un_act];
         end
 
     end
     
     function var = RecomposeVars(obj,order,par)
         
-        var = zeros(length([obj.actuated;obj.unactuated]),1);
+        
         switch order
             case 0
-                var(par.actuated_mask) = obj.actuated;
-                var(par.unactuated_mask) = obj.unactuated;
+                var = par.permutation_matrix'*obj.pose_P;
             case 1
-                var(par.actuated_mask) = obj.actuated_deriv;
-                var(par.unactuated_mask) = obj.unactuated_deriv;
+                var = par.permutation_matrix'*obj.pose_P_d;
             case 2
-                var(par.actuated_mask) = obj.actuated_deriv_2;
-                var(par.unactuated_mask) = obj.unactuated_deriv_2;
+                var = par.permutation_matrix'*obj.pose_P_dd;
         end
 
     end
     
-    function obj = UpdateReducedTransformationMatrix(obj,mat)
-        
-        dims = size(obj.analitic_orthogonal);
-        obj.Gamma_mat = mat(dims(2)+1:dims(1),:)*obj.analitic_orthogonal;
-
-    end
   end
 end

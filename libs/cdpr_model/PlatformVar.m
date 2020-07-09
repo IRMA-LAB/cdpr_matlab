@@ -30,18 +30,20 @@ classdef PlatformVar
     pose;%is a vector(size[6,1]), containing the the properties POSITION and ORIENTATION, used to parameterize platform pose.
     pose_q;%is a vector(size[7,1]), containing the the properties POSITION and QUATERNION, used to parameterize platform pose.
     
-    orientation_deriv;%is a vector (size[3,1], [rad/s]), containing the 1th order time derivatives of angles of rotation.
-    quaternion_deriv;%is a vector (size[3,1]), containing the 1th order time derivatives of QUATERNION.
+    orientation_d;%is a vector (size[3,1], [rad/s]), containing the 1th order time derivatives of angles of rotation.
+    quaternion_d;%is a vector (size[3,1]), containing the 1th order time derivatives of QUATERNION.
     pose_d;
     pose_q_d;
     H_mat;%is a matrix (size[3,3]) that transforms the 1th order derivatives of rotation angles to angular velocity.
+    D_mat
     
     
-    orientation_deriv_2;%is a vector (size[3,1], [rad/s^2]), containing the 2nd order time derivatives of angles of rotation.
-    quaternion_deriv_2;%is a vector (size[3,1]), containing the 2nd order time derivatives of QUATERNION.
-    pose_d_2;
-    pose_q_d_2;
-    H_mat_deriv;%is a matrix (size[3,3]), obtained by time differentiation of the matrix H_MAT.
+    orientation_dd;%is a vector (size[3,1], [rad/s^2]), containing the 2nd order time derivatives of angles of rotation.
+    quaternion_dd;%is a vector (size[3,1]), containing the 2nd order time derivatives of QUATERNION.
+    pose_dd;
+    pose_q_dd;
+    H_mat_d;%is a matrix (size[3,3]), obtained by time differentiation of the matrix H_MAT.
+    D_mat_d
     
     mass_matrix_global_ss;%is the mass matrix(size[6,6]), expressed in the global frame. 
     ext_load_ss;%
@@ -51,6 +53,12 @@ classdef PlatformVar
 
   end
   methods
+    function obj = PlatformVar(pose_dim)
+      if  nargin > 0
+        obj.D_mat = eye(6,pose_dim);
+        obj.D_mat_d = zeros(6,pose_dim);
+      end
+    end
     function obj = UpdatePose(obj,pos,orient,ang_type)
         %UPDATEPOSE updates 0th order kinematic variables.
         %   UPDATEPOSE updates time dependent variables according to the  
@@ -73,7 +81,7 @@ classdef PlatformVar
           obj.pose = [pos;orient];
           obj.pose_q = [pos;obj.quaternion];
           obj.H_mat = HtfZYZ(obj.orientation); 
-        case RotationParametrizations.TAYT_BRYAN
+        case RotationParametrizations.TAIT_BRYAN
           obj.rot_mat = RotXYZ(orient);
           obj.orientation = orient;
           obj.pose = [pos;orient];
@@ -102,6 +110,7 @@ classdef PlatformVar
           %obj.pose = ??;
           obj.H_mat = HtfQuaternion(obj.quaternion);
       end
+      obj.D_mat(4:end,4:end) = obj.H_mat;
     end
     function obj = UpdateVelocity(obj,vel,orient_d,ang_type) 
         %UPDATEVELOCITY updates 1th order kinematic variables.
@@ -119,36 +128,37 @@ classdef PlatformVar
       obj.velocity = vel;
       switch (ang_type)
         case RotationParametrizations.EULER_ZYZ
-          obj.orientation_deriv = orient_d;
+          obj.orientation_d = orient_d;
           %obj.quaternion_deriv = ??;
           obj.angular_vel = obj.H_mat*orient_d;
-          obj.pose_d = [obj.velocity;obj.orientation_deriv];
-          obj.H_mat_deriv = DHtfZYZ(obj.orientation,obj.orientation_deriv);   
-        case RotationParametrizations.TAYT_BRYAN
-          obj.orientation_deriv = orient_d;
+          obj.pose_d = [obj.velocity;obj.orientation_d];
+          obj.H_mat_d = DHtfZYZ(obj.orientation,obj.orientation_d);   
+        case RotationParametrizations.TAIT_BRYAN
+          obj.orientation_d = orient_d;
           %obj.quaternion_deriv = ??;
           obj.angular_vel = obj.H_mat*orient_d;
-          obj.pose_d = [obj.velocity;obj.orientation_deriv];
-          obj.H_mat_deriv = DHtfTaytBryan(obj.orientation,obj.orientation_deriv);
+          obj.pose_d = [obj.velocity;obj.orientation_d];
+          obj.H_mat_d = DHtfTaytBryan(obj.orientation,obj.orientation_d);
         case RotationParametrizations.RPY
           obj.orientation_deriv = orient_d;
           %obj.quaternion_deriv = ??;
           obj.angular_vel = obj.H_mat*orient_d;
-          obj.pose_d = [obj.velocity;obj.orientation_deriv];
-          obj.H_mat_deriv = DHtfRPY(obj.orientation,obj.orientation_deriv);
+          obj.pose_d = [obj.velocity;obj.orientation_d];
+          obj.H_mat_d = DHtfRPY(obj.orientation,obj.orientation_d);
         case RotationParametrizations.TILT_TORSION
-          obj.orientation_deriv = orient_d;
+          obj.orientation_d = orient_d;
           %obj.quaternion_deriv = ??;
           obj.angular_vel = obj.H_mat*orient_d;
-          obj.pose_d = [obj.velocity;obj.orientation_deriv];
-          obj.H_mat_deriv = DHtfTiltTorsion(obj.orientation,obj.orientation_deriv);
+          obj.pose_d = [obj.velocity;obj.orientation_d];
+          obj.H_mat_d = DHtfTiltTorsion(obj.orientation,obj.orientation_d);
         case RotationParametrizations.QUATERNION
           %obj.orientation_deriv = orient_d;
-          obj.quaternion_deriv = orient_d;
+          obj.quaternion_d = orient_d;
           obj.angular_vel = obj.H_mat*orient_d;
-          obj.pose_q_d = [obj.velocity;obj.orientation_deriv];
-          obj.H_mat_deriv = DHtfQuaternion(obj.quaternion,obj.quaternion_deriv);
+          obj.pose_q_d = [obj.velocity;obj.orientation_d];
+          obj.H_mat_d = DHtfQuaternion(obj.quaternion,obj.quaternion_d);
       end
+      obj.D_mat_d(4:end,4:end) = obj.H_mat_d;
     end
     function obj = UpdateAcceleration(obj,acc,orient_d_2,ang_type)
         %UPDATEACCELERATION updates 2nd order kinematic variables.
@@ -166,35 +176,35 @@ classdef PlatformVar
       obj.acceleration = acc;
       switch (ang_type)
         case RotationParametrizations.EULER_ZYZ
-          obj.orientation_deriv_2 = orient_d_2;
+          obj.orientation_dd = orient_dd;
           %obj.quaternion_deriv = ??;
-          obj.angular_acc = obj.H_mat*orient_d_2 +...
-            obj.H_mat_deriv*obj.orientation_deriv;
-          obj.pose_d_2 = [obj.acceleration;obj.orientation_deriv_2];
-        case RotationParametrizations.TAYT_BRYAN
-          obj.orientation_deriv_2 = orient_d_2;
+          obj.angular_acc = obj.H_mat*orient_dd +...
+            obj.H_mat_d*obj.orientation_d;
+          obj.pose_d = [obj.acceleration;obj.orientation_dd];
+        case RotationParametrizations.TAIT_BRYAN
+          obj.orientation_dd = orient_dd;
           %obj.quaternion_deriv = ??;
-          obj.angular_acc = obj.H_mat*orient_d_2 +...
-            obj.H_mat_deriv*obj.orientation_deriv;
-          obj.pose_d_2 = [obj.acceleration;obj.orientation_deriv_2];
+          obj.angular_acc = obj.H_mat*orient_dd +...
+            obj.H_mat_d*obj.orientation_d;
+          obj.pose_dd = [obj.acceleration;obj.orientation_dd];
         case RotationParametrizations.RPY
-          obj.orientation_deriv_2 = orient_d_2;
+          obj.orientation_dd = orient_dd;
           %obj.quaternion_deriv = ??;
-          obj.angular_acc = obj.H_mat*orient_d_2 +...
-            obj.H_mat_deriv*obj.orientation_deriv;
-          obj.pose_d_2 = [obj.acceleration;obj.orientation_deriv_2];
+          obj.angular_acc = obj.H_mat*orient_dd +...
+            obj.H_mat_d*obj.orientation_d;
+          obj.pose_dd = [obj.acceleration;obj.orientation_dd];
         case RotationParametrizations.TILT_TORSION
-          obj.orientation_deriv_2 = orient_d_2;
+          obj.orientation_dd = orient_dd;
           %obj.quaternion_deriv = ??;
-          obj.angular_acc = obj.H_mat*orient_d_2 +...
-            obj.H_mat_deriv*obj.orientation_deriv;
-          obj.pose_d_2 = [obj.acceleration;obj.orientation_deriv_2];
+          obj.angular_acc = obj.H_mat*orient_dd +...
+            obj.H_mat_d*obj.orientation_d;
+          obj.pose_dd = [obj.acceleration;obj.orientation_dd];
         case RotationParametrizations.QUATERNION
           %obj.orientation_deriv_2 = ??;
-          obj.quaternion_deriv_2 = orient_d_2;
-          obj.angular_acc = obj.H_mat*orient_d_2 +...
-            obj.H_mat_deriv*obj.orientation_deriv;
-          obj.pose_q_d_2 = [obj.acceleration;obj.quaternion_deriv_2];
+          obj.quaternion_dd = orient_dd;
+          obj.angular_acc = obj.H_mat*orient_dd +...
+            obj.H_mat_d*obj.orientation_d;
+          obj.pose_q_dd = [obj.acceleration;obj.quaternion_dd];
       end
       
     end

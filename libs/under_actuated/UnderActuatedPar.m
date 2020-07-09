@@ -9,23 +9,18 @@ classdef UnderActuatedPar
     %
     properties
         
-        actuated_mask;
-        unactuated_mask;
+        permutation_matrix;
         n_cables;
         pose_dim;
         
     end
     methods
-        function obj = UnderActuatedPar(n,n_p)
+        function obj = UnderActuatedPar(n,n_p,mask)
             obj.n_cables = n;
             obj.pose_dim = n_p;
-            obj.actuated_mask = zeros(n,1);
-            obj.unactuated_mask = zeros(n_p-n,1);
-            for i=1:n
-                obj.actuated_mask(i) = i;
-            end
-            for i=n+1:n_p
-                obj.unactuated_mask(i-n) = i;
+            obj.permutation_matrix = zeros(6);
+            for i=1:6
+               obj.permutation_matrix(i,(mask(i))) = 1; 
             end
         end
         
@@ -34,16 +29,9 @@ classdef UnderActuatedPar
             % CDPRVAR defines the object CABLE containing an object for each
             % cable that stores time dependent variables of the cable and its
             % swivel pulley.
-            act_count = 0;
-            unact_count = 0;
-            for i=1:obj.pose_dim
-                if (mask(i)==1)
-                    act_count = act_count+1;
-                    obj.actuated_mask(act_count) = i;
-                else
-                    unact_count = unact_count+1;
-                    obj.unactuated_mask(unact_count) = i;
-                end
+            obj.permutation_matrix = zeros(6);
+            for i=1:6
+               obj.permutation_matrix(i,(mask(i))) = 1; 
             end
         end
         

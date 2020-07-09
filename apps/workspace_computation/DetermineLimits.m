@@ -39,7 +39,7 @@ for i=1:cdpr_p.n_cables
 end
 
 lim.xyz_mean = (limits(1:3,1)+limits(1:3,2))./2;
-lim.dl = (limits(:,2)-limits(:,1))/2;
-lim.dl2 = abs(limits2(:,2)-limits2(:,1));
+lim.dl_frame = (limits(:,2)-limits(:,1))/2;
+lim.dl_plat = abs(limits2(:,2)-limits2(:,1))/2;
 
 end

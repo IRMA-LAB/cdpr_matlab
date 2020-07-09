@@ -8,20 +8,17 @@ addpath('../../libs/export_utilities')
 addpath('../../libs/numeric')
 addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
+addpath('../../libs/over_actuated')
 folder = '../../data';
 
 
 %workspace of grab underactuated prototype
 [cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
-LoadConfigAndInit("Grab_prototype_44","Grab_prototype_44");
-tension_limits = [2;200];
-ws_type = WorkspaceType.MAX_MIN_TENSION;
-z_lim_inf = -1.5;
-mesh_elements = 15;
+LoadConfigAndInit("Greenline_prototype","Greenline_prototype");
+
+ws_info = LoadWsInfo("Greenline_prototype_WS_info");
+
 cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
-    utilities,cdpr_outputs,1,tension_limits,folder,record,mesh_elements,z_lim_inf,ws_type);
-% 
-%     tension_limits = [0.1;10];
-%     position = [0;0;-0.2];
-%     cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
-%         utilities,cdpr_outputs,3,tension_limits,folder,record,3,position);
+    utilities,cdpr_outputs,folder,record,ws_info);
+record = record.ResetFigureLimits(cdpr_outputs.limits,ws_info.display_grid_divider);
+DisplayAndSaveWorkspace(cdpr_parameters,cdpr_variables,cdpr_outputs,ws_info,folder,record);

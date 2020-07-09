@@ -19,8 +19,8 @@ classdef CableVar
         vers_n;% is a vector(size[3,1]), containing the components, projected on the global frame, of the versor equidirectional and equiverse to the position vector (B-C).
         vers_w;%is a vector (size[3,1]), containing the components, projected on the global frame, of the unit vector normal to the pulley plane at the point D.
         vers_t;%is a vector(size[3,1]), containing the components of the unit vector from B to A, projected on the global frame.
-        geometric_jacobian_row;%
-        analitic_jacobian_row;%     
+        geometric_jacobian_col;%
+        analitic_jacobian_col;%     
         % VERS_U, VERS_W and VERS_N define a right handed coordinate system.
         
         complete_speed;% is the 1th order time derivative of LENGTH.
@@ -32,8 +32,8 @@ classdef CableVar
         vers_w_deriv;%is a vector(size[3,1]), containing the components of the 1th order time derivatives of VERS_W.
         vers_n_deriv;%is a vector(size[3,1]), containing the components of the 1th order time derivatives of VERS_N.
         vers_t_deriv;%is a vector(size[3,1]), containing the components of the 1th order time derivatives of VERS_RHO.
-        geometric_jacobian_row_d;%
-        analitic_jacobian_row_d;%
+        geometric_jacobian_col_d;%
+        analitic_jacobian_col_d;%
         
         complete_acceleration;% is the 2nd order time derivative of LENGTH.
         swivel_ang_acc;% is the 2nd order time derivative of SWIVEL_ANG.

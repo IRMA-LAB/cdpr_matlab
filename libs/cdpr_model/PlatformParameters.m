@@ -17,7 +17,7 @@ classdef PlatformParameters
     mass; % is the mass([kg]) of the platform.
     inertia_mat_G_loc;% is a matrix (size [3,3], [kg m^2]), containing the elements of the inertia matrix about G, projected in the local frame.             
     pos_PG_loc; % is a vector (size[3,1],[m]), containing the components of the center of mass position, projected in the local frame.       
-               
+    rotation_parametrization;% is a string containing the name of the adopted method for rotation parameterization.           
     gravity_acceleration = [0;0;-9.80665]; %[m/s^2]
     
   end
@@ -37,6 +37,7 @@ classdef PlatformParameters
      
       obj.ext_force_glob = platform_parameters_struct.ext_force_loc;
       obj.ext_torque_glob = platform_parameters_struct.ext_torque_loc;
+      obj.rotation_parametrization = platform_parameters_struct.rotation_parametrization;
     end
   end
 end

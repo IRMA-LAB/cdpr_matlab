@@ -2,7 +2,7 @@ function limits = CalcWorkspaceGraphicalLimits(cdpr_p,ws_data)
 
 lim_sup = mean(ws_data.pose(1:3,:),2);
 lim_inf = lim_sup;
-cdpr_v = CdprVar(cdpr_p.n_cables);
+cdpr_v = CdprVar(cdpr_p.n_cables,cdpr_p.pose_dim);
 for k = 1:ws_data.counter
     cdpr_v = UpdateIKZeroOrd(ws_data.pose(1:3,k),ws_data.pose(4:end,k),cdpr_p,cdpr_v);
     for i=1:cdpr_p.n_cables

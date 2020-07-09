@@ -1,5 +1,6 @@
 {
-  "rotation_parametrization": "TILT_TORSION",
+  "motion_pattern" : "THREE_R_THREE_T",
+  "permutation_mask" : [1,2,3,4,5,6],
   "actuator": [
     {
 	  "active": true,
@@ -232,6 +233,7 @@
       [0],
       [0],
       [0]
-    ]
+    ],
+"rotation_parametrization": "TILT_TORSION"
   }
 }
