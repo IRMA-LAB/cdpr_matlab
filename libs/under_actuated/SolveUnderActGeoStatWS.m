@@ -21,7 +21,7 @@ if norm(fval)<0.001
             (cdpr_p.underactuated_platform,cdpr_v.analitic_jacobian,cdpr_v.D_mat);
         K_matrix = CalcStiffnessMatUnder(cdpr_v);
         d = eig(K_matrix);
-        isposdef = all(d) > 0;
+        isposdef = all(d > 0);
         
         if (isposdef) % stable equilibrium
           %rec.SetFrame(cdpr_v,cdpr_p);

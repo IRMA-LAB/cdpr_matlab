@@ -1,0 +1,15 @@
+[{"p_s" : [[0.36],[-0.73],[-0.8]],
+ "p_f" : [[1.71],[0.5],[-0.2]],
+ "tr_time" : 2,
+ "tr_geom" : "LINE",
+ "tr_tech" : "IS",
+ "tech_info" : "Grab_prototype_44_IS_info.json"
+  },
+{"p_s" : [[1.71],[0.5],[-0.2]],
+ "p_f" : [[0.36],[-0.73],[-0.8]], 
+ "tr_time" : 2,
+ "tr_geom" : "LINE",
+ "tr_tech" : "IS",
+ "tech_info" : "Grab_prototype_44_IS_info.json"
+  }
+]

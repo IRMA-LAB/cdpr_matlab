@@ -1,13 +1,10 @@
-function data = GetDestinations(data,ws_par,cdpr_p,cdpr_v,record,ut,gFun)
+function data = GetFeasibleDestinations(data,ws_par,cdpr_p,cdpr_v,rec,ut)
 
-data.pNumber = 2;
-mode_mask = [1 2 3];
+for i=1:length(data)
+info_ps = ExtractWsInfo(cdpr_p,ws_par,data(i).p_s);
+info_pf = ExtractWsInfo(cdpr_p,ws_par,data(i).p_f);
 
-ISorder = 1;
-
-p(1:3,1)  = [0.36;-0.73;-0.8];
-data.info(1) = ExtractWsInfo(cdpr_p,ws_par,p(1:3,1));
-data.p(:,1) = data.info(1).pose;
+end
 
 
 p(1:3,2)  = [-0.82;1.18;-1.4];

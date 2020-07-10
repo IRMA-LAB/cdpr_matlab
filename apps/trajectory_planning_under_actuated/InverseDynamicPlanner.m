@@ -9,15 +9,16 @@ addpath('../../libs/export_utilities')
 addpath('../../libs/numeric')
 addpath('../../libs/orientation_geometry')
 addpath('../../libs/under_actuated')
+addpath('../../libs/over_actuated')
 folder = '../../data';
 
-% [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-%   LoadConfigAndInit("Grab_prototype_33","DynamicPlanning");
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("Grab_prototype_33","DynamicPlanning_Grab_prototype_33");
+  LoadConfigAndInit("Grab_prototype_44","RTR_Grab_prototype_44");
 
 % fare la cartella output per la roba enorme con dentro un .keep
-
+plan_info = LoadPlanInfo("Grab_prototype_44_planning_info");
+plan_info = GetFeasibleDestinations(plan_info,ws_parameters,cdpr_parameters,...
+    cdpr_variables,record,utilities);
 simulationData = struct();
 geometricFunction = @LineFunction;
 simulationData = GetDestinations(simulationData,ws_parameters,cdpr_parameters,...
