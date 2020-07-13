@@ -14,7 +14,7 @@ function cdpr_v = UpdateIKFirstOrd(velocity,orientation_d,cdpr_p,cdpr_v)
 %   CDPR_V is a structure containing time dependent variable of the cdpr.
 
 cdpr_v.platform = UpdatePlatformVelocity(velocity,orientation_d,...
-  cdpr_p.rotation_parametrization,cdpr_v.platform);
+  cdpr_p.platform.rotation_parametrization,cdpr_v.platform);
 for i=1:length(cdpr_v.cable)
   cdpr_v.cable(i) = UpdateCableFirstOrd(cdpr_p.cable(i),cdpr_v.platform,cdpr_v.cable(i));
 end

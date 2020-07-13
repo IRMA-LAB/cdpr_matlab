@@ -9,6 +9,6 @@ function cdpr_v = CalcTotalLoads(cdpr_v,cdpr_p)
 %   total loads, projected on the global frame.
   cdpr_v = CalcExternalLoads(cdpr_v,cdpr_p);
   cdpr_v = CalcDynamicLoads(cdpr_v,cdpr_p);
-  cdpr_v.total_load = cdpr_v.ext_load-cdpr_v.dyn_load;
+  cdpr_v.platform.total_load = cdpr_v.platform.ext_load-cdpr_v.platform.dyn_load;
 
 end

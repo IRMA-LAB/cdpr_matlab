@@ -1,13 +1,16 @@
 function vect = IntegrableInverseDynamics(cdpr_p,cdpr_v,...
-    sim_data,index,time,un_act_vars,geom_fun)
+    sim_data,time,un_act_vars)
 
 % Trajectory settings
-pStart = sim_data.p(cdpr_p.underactuated_platform.actuated_mask,index);
-pEnd = sim_data.p(cdpr_p.underactuated_platform.actuated_mask,index+1);
+cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.ExtractVars(cdpr_p.underactuated_platform,0,sim_data.p_s);
+act_start = cdpr_v.underactuated_platform.pose_P(1:cdpr_p.n_cables);
+cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.ExtractVars(cdpr_p.underactuated_platform,0,sim_data.p_f);
+act_end = cdpr_v.underactuated_platform.pose_P(1:cdpr_p.n_cables);
+
 %normalizedTime = time/sim_data.dt(index);
-normalizedTime = time/sim_data.dt(index);
+normalizedTime = time/sim_data.dt;
 act_vars = sim_data.motion_law_function(sim_data,normalizedTime,...
-    geom_fun,pStart,pEnd,sim_data.dt(index),index);
+    act_start,act_end);
 
 % Coordinate manipulations
 cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.SetVars(0,act_vars(1,:)',...
@@ -22,14 +25,20 @@ pose_d = cdpr_v.underactuated_platform.RecomposeVars(1,cdpr_p.underactuated_plat
 % Model computations
 cdpr_v = UpdateIKZeroOrd(pose(1:3),pose(4:end),cdpr_p,cdpr_v);
 cdpr_v = UpdateIKFirstOrd(pose_d(1:3),pose_d(4:end),cdpr_p,cdpr_v);
-cdpr_v.platform = cdpr_v.platform.UpdateMassMatrixStateSpace(cdpr_p);
-cdpr_v = CalcTotalLoadsStateSpace(cdpr_v,cdpr_p);
-cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.UpdateDynamicsStateSpace(cdpr_p.underactuated_platform,...
-    cdpr_v.analitic_jacobian,cdpr_v.platform.mass_matrix_global_ss,cdpr_v.platform.total_load_ss);
-cdpr_v = UnderactuatedDynamicsResolution(cdpr_v,cdpr_p.underactuated_platform);
+cdpr_v.platform = cdpr_v.platform.UpdateMassMatrix(cdpr_p);
+cdpr_v = CalcTotalLoads(cdpr_v,cdpr_p);
+cdpr_v.underactuated_platform =...
+  cdpr_v.underactuated_platform.UpdateJacobians(cdpr_p.underactuated_platform,...
+  cdpr_v.analitic_jacobian,cdpr_v.D_mat);
+
+M_f = cdpr_v.underactuated_platform.geometric_orthogonal'*...
+  cdpr_v.platform.mass_matrix_global*cdpr_v.D_mat*cdpr_p.underactuated_platform.permutation_matrix';
+f_f = cdpr_v.underactuated_platform.geometric_orthogonal'*...
+  cdpr_v.platform.total_load;
 
 % Assignment of the state derivative
-vect(1:cdpr_p.pose_dim-cdpr_p.n_cables,1) = cdpr_v.underactuated_platform.unactuated_deriv;
-vect(cdpr_p.pose_dim-cdpr_p.n_cables+1:2*(cdpr_p.pose_dim-cdpr_p.n_cables),1) = cdpr_v.underactuated_platform.unactuated_deriv_2;
+vect(1:cdpr_p.pose_dim-cdpr_p.n_cables,1) = cdpr_v.underactuated_platform.pose_P_d(cdpr_p.n_cables+1:end);
+vect(cdpr_p.pose_dim-cdpr_p.n_cables+1:2*(cdpr_p.pose_dim-cdpr_p.n_cables),1) =...
+  linsolve(M_f(:,cdpr_p.n_cables+1:end),f_f-M_f(:,1:cdpr_p.n_cables)*cdpr_v.underactuated_platform.pose_P_dd(1:cdpr_p.n_cables));
 
 end

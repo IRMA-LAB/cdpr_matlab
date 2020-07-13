@@ -26,12 +26,16 @@ classdef CdprParameter
           p =  json.read(name);
           workspace_center = zeros(3,1);
           i = 0;
+          j = 0;
           while (i<length(p.actuator))
               i = i+1;
               if (p.actuator(i).active == 0)
                   p.actuator(i) = [];
                   i = i-1;
+              else
+                p.actuator(i).id = j;
               end
+              j=j+1;
           end
           obj.platform = PlatformParameters(p.platform);
           

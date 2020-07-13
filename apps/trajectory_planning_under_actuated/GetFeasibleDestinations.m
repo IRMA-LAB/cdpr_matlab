@@ -1,47 +1,18 @@
 function data = GetFeasibleDestinations(data,ws_par,cdpr_p,cdpr_v,rec,ut)
 
 for i=1:length(data)
-info_ps = ExtractWsInfo(cdpr_p,ws_par,data(i).p_s);
-info_pf = ExtractWsInfo(cdpr_p,ws_par,data(i).p_f);
-
+info_ps(i) = ExtractWsInfo(cdpr_p,ws_par,data(i).p_s);
+info_pf(i) = ExtractWsInfo(cdpr_p,ws_par,data(i).p_f);
+%if ()
+if(strcmp(data(i).tr_tech,'IS')) % IS
+  f = ExtractNaturalFrequenciesOnPath(info_ps(i).pose,info_pf(i).pose,data(i).geometricFunction,cdpr_p,cdpr_v,ut);
+  [data(i).shaper(:,:),data(i).shaperL] = ComputeMultiModeShaper(f,1,data(i).IS_order,ut);
+  [data(i).lim,data(i).dt] = ComputeTrajectoryLimsAndT(data,f);
+  data(i).p_s = info_ps(i).pose;
+  data(i).p_f = info_pf(i).pose;
+else % RTR
+  
 end
-
-
-p(1:3,2)  = [-0.82;1.18;-1.4];
-data.info(2) = ExtractWsInfo(cdpr_p,ws_par,p(1:3,2));
-data.p(:,2) = data.info(2).pose;
-
-f = ExtractNaturalFrequenciesOnPath(data.p,1,gFun,cdpr_p,cdpr_v,ut,mode_mask);
-[data.shaper(:,:,1),data.shaperL(1)] = ComputeMultiModeShaper(f,1,ISorder,ut);
-data = ComputeTrajectoryLimsAndT(data,f,1);
-
-% data.p(1:3,3)  = ws_par.workspace_center+[0.1;0;0.1];
-% data.info(3) = ExtractWsInfo(cdpr_p,ws_par,data.p(1:3,3));
-% data.p(:,3) = data.info(3).pose;
-% 
-% f = ExtractNaturalFrequenciesOnPath(data.p,2,gFun,cdpr_p,cdpr_v,ut,mode_mask);
-% [data.shaper(:,:,2),data.shaperL(2)] = ComputeMultiModeShaper(f,2,ISorder,ut);
-% data = ComputeTrajectoryLimsAndT(data,f,2);
-% 
-% 
-% data.info(4) = data.info(1);
-% data.p(:,4) = data.info(4).pose;
-% f = ExtractNaturalFrequenciesOnPath(data.p,3,gFun,cdpr_p,cdpr_v,ut,mode_mask);
-% [data.shaper(:,:,3),data.shaperL(3)] = ComputeMultiModeShaper(f,3,ISorder,ut);
-% data = ComputeTrajectoryLimsAndT(data,f,3);
-
-% p(1:3,1)  = ws_par.workspace_center+[0;-0.5;-0.3];
-% data.info(1) = ExtractWsInfo(cdpr_p,ws_par,p(1:3,1));
-% data.p(:,1) = data.info(1).pose;
-% 
-% data.p(1:3,2)  = ws_par.workspace_center+[0;0.5;0.3];
-% data.info(2) = ExtractWsInfo(cdpr_p,ws_par,data.p(1:3,2));
-% data.p(:,2) = data.info(2).pose;
-% 
-% f = ExtractNaturalFrequenciesOnPath(data.p,1,gFun,cdpr_p,cdpr_v,ut,mode_mask);
-% [data.shaper(:,:,1),data.shaperL(1)] = ComputeMultiModeShaper(f,1,ISorder,ut);
-% data = ComputeTrajectoryLimsAndT(data,f,1);
-
-
+end
   
 end

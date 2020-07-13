@@ -13,8 +13,16 @@ addpath('../../libs/prototype_log_parser')
 addpath('../../libs/prototype_log_parser/msgs')
 folder = '../../data';
 
+tmp_file = '/tmp/cable_robot_app_tmp.txt';
+fid = fopen(tmp_file, 'r');
+abs_path = fgetl(fid);
+fclose(fid);
+[config_dir, config_name, config_ext] = fileparts(abs_path);
+
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("Grab_prototype_44","HomingTest44");
+  LoadConfigAndInit(config_name,"HomingTest44");
+% [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
+%   LoadConfigAndInit("Grab_prototype_44","HomingTest44");
 homing_info = LoadHomingInfo("Homing_info");
 
 start = SimulateGoToStartProcedureErroneous...

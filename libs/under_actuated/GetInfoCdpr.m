@@ -4,7 +4,7 @@ s.t(1,j) = t;
 s.tension_vector(:,j) = cdpr_v.tension_vector;
 s.platform.pose(:,j) = cdpr_v.platform.pose;
 s.platform.pose_d(:,j) = cdpr_v.platform.pose_d;
-s.platform.pose_d_2(:,j) = cdpr_v.platform.pose_d_2;
+s.platform.pose_dd(:,j) = cdpr_v.platform.pose_dd;
 
 for i = 1:length(cdpr_v.cable)
     s.cable(i).complete_length(:,j) = cdpr_v.cable(i).complete_length;

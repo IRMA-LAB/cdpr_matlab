@@ -16,6 +16,7 @@ classdef CableParameters
     swivel_pulley_transmission_ratio;% is the swivel pulley-encoder transmission ratio. 
     l0;% is the initial cable length
     motor_transmission_ratio;% is the motor-cable transmission ratio.
+    id
   end
   methods
     function obj = CableParameters(cable_parameters_struct)
@@ -32,6 +33,7 @@ classdef CableParameters
       obj.vers_i = obj.vers_i./norm(obj.vers_i);
       obj.vers_j = cross(obj.vers_k,obj.vers_i);
       obj.vers_j = obj.vers_j./norm(obj.vers_j);
+      obj.id = cable_parameters_struct.id;
       obj.swivel_pulley_r =  cable_parameters_struct.pulley.radius;
       obj.swivel_pulley_transmission_ratio = cable_parameters_struct.pulley.transmission_ratio;
       obj.l0 = cable_parameters_struct.winch.l0;

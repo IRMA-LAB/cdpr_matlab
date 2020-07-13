@@ -209,7 +209,7 @@
       ]
 	  },
       "winch": {
-	  "transmission_ratio": 5.904115307541675e-08,
+	  "transmission_ratio": 5.900233991787028e-08,
 	  "l0": 1,
       "pos_PA_loc": [
         [0.258285334330924],

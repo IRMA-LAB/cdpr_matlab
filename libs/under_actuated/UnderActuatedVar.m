@@ -158,6 +158,31 @@ classdef UnderActuatedVar
 
     end
     
+    function obj = SetVarsAct(obj,order,par,var_act)
+           
+        switch order
+            case 0     
+                obj.pose_P(1:par.n_cables,1) = var_act;
+            case 1
+                obj.pose_P_d(1:par.n_cables,1) = var_act;
+            case 2
+                obj.pose_P_dd(1:par.n_cables,1) = var_act;
+        end
+
+    end
+    function obj = SetVarsUnAct(obj,order,par,var_unact)
+           
+        switch order
+            case 0     
+                obj.pose_P(par.n_cables+1:end,1) = var_unact;
+            case 1
+                obj.pose_P_d(par.n_cables+1:ebd,1) = var_unact;
+            case 2
+                obj.pose_P_dd(par.n_cables+1:end,1) = var_unact;
+        end
+
+    end
+    
     function var = RecomposeVars(obj,order,par)
         
         
