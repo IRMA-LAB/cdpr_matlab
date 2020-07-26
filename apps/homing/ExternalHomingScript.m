@@ -34,8 +34,8 @@ home = SimulateGoToStartProcedureIdeal...
 % making use of banal extimation of the workspace center (geometrical
 % property  of the robot) and acquired data. No need for user interaction.
 
-[imported_data_coarse, ~] = parseCableRobotLogFile('data.log');
-%[imported_data_coarse, ~] = parseCableRobotLogFile('/tmp/cable-robot-logs/data.log');
+%[imported_data_coarse, ~] = parseCableRobotLogFile('data.log');
+[imported_data_coarse, ~] = parseCableRobotLogFile('/tmp/cable-robot-logs/data.log');
 [delta_l,delta_sw] = Reparse(imported_data_coarse.actuator_status.values,...
     cdpr_parameters);
 init_guess = GenerateInitialGuess(cdpr_parameters,cdpr_variables,delta_l,home,record,utilities);
@@ -52,4 +52,5 @@ j_struct.init_pose = pose0';
 cd ../../data
 json.startup
 json.write(j_struct, 'homing_results.json')
-fprintf('Results dumped in %s\n', strcat(pwd, '/homing_results.json'))
+fprintf('Results dumped in %s\n', strcat(pwd, '/results.json'))
+
