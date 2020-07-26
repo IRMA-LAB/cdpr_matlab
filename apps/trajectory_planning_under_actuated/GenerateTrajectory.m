@@ -14,7 +14,7 @@ folder = '../../data';
 
 [cdpr_parameters, cdpr_variables, ws_parameters, cdpr_outputs,record,utilities] = ...
   LoadConfigAndInit("Grab_prototype_44","RTR_Grab_prototype_44");
-load ..\..\data\planning_files\TEST_IS2
+load ..\..\data\planning_files\TEST_STD2
 motors_id = [];
 data = t';
 for i=1:cdpr_parameters.n_cables
@@ -22,7 +22,7 @@ motors_id = [motors_id cdpr_parameters.cable(i).id];
 data = [data cables(i).complete_length'];
 end
 motors_id_str = num2str(motors_id);
-name = "..\..\data\planning_files\IS";
+name = "..\..\data\planning_files\STD2_2";
 suffix = name + "_" + motors_id_str(~isspace(motors_id_str));
 filepath =  suffix + ".txt";
 N = cdpr_parameters.n_cables;

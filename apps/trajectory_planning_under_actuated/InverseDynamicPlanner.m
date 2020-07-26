@@ -32,10 +32,10 @@ plan_info = GetFeasibleDestinations(plan_info,ws_parameters,cdpr_parameters,...
 % [outputDataRTRMT] = RestToRestCoefficientsMinimumTime(cdpr_parameters,cdpr_variables,...
 %       simulationData,geometricFunction,utilities,record);
 % tRTRMT = toc;
-tic
-[outputDataIS] = ShapedInverseSimulator(cdpr_parameters,cdpr_variables,...
-     plan_info,utilities);
-tIS = toc;
+% tic
+% [outputDataIS] = ShapedInverseSimulator(cdpr_parameters,cdpr_variables,...
+%      plan_info,utilities);
+% tIS = toc;
 tic;
 [outputDataSTD] = StandardInverseSimulator(cdpr_parameters,cdpr_variables,...
      plan_info,utilities);
@@ -43,6 +43,6 @@ tSTD = toc;
  
 % DataLoggerStruct(outputDataRTR,folder,'InverseRTR',false,cdpr_parameters,cdpr_variables,record,utilities);
 % DataLoggerStruct(outputDataRTRMT,folder,'InverseRTRMT',true,cdpr_parameters,cdpr_variables,record,utilities);
-DataLoggerStruct(outputDataIS,folder,'TEST_IS',false,cdpr_parameters,cdpr_variables,record,utilities);
+% DataLoggerStruct(outputDataIS,folder,'TEST_IS',false,cdpr_parameters,cdpr_variables,record,utilities);
 DataLoggerStruct(outputDataSTD,folder,'TEST_STD',false,cdpr_parameters,cdpr_variables,record,utilities);
  

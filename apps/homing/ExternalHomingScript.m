@@ -48,7 +48,8 @@ s0 = sol(cdpr_parameters.n_cables+1:2*cdpr_parameters.n_cables,1);
 [pose0,resnormp,residualp,exitflagp,outputp] = lsqnonlin(@(v)FunDkGsSwL...
   (cdpr_parameters,l0,s0,v,record),start.pose ,[],[],utilities.lsqnonlin_options_grad);
 
-j_struct.init_pose = pose0;
+j_struct.init_pose = pose0';
+cd ../../data
 json.startup
-json.write(j_struct, 'results.json')
-fprintf('Results dumped in %s\n', strcat(pwd, '/results.json'))
+json.write(j_struct, 'homing_results.json')
+fprintf('Results dumped in %s\n', strcat(pwd, '/homing_results.json'))

@@ -3,6 +3,7 @@ function [output] = StandardInverseSimulator(cdpr_p,cdpr_v,...
 
 for ind = 1:length(sim_data)
  
+ %sim_data(ind).dt = sim_data(ind).dt+sim_data(ind).shaper(2,end);  
  sim_data(ind).T = sim_data(ind).dt;
  sim_data(ind).motion_law_function = @ActuatedDofsMod;
  sim_data(ind).cMat=TrapzCoef(sim_data(ind).lim);

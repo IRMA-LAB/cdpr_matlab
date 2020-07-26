@@ -10,7 +10,9 @@ timeSpan = 0:ut.t_interval:4;
         sim_data,time,orientation),...
     timeSpan,start_coord);
   out = struct();
-  for i=1:length(timeSpan)
+  timeSpanExport = 0:ut.t_interval:sim_data.T;
+  %for i=1:length(timeSpan)
+  for i=1:length(timeSpanExport)
     
     cdpr_v.underactuated_platform = cdpr_v.underactuated_platform.ExtractVars(cdpr_p.underactuated_platform,0,sim_data.p_s);
     act_start = cdpr_v.underactuated_platform.pose_P(1:cdpr_p.n_cables);
