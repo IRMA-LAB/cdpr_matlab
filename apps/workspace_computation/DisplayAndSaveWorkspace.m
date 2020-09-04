@@ -29,7 +29,10 @@ switch ws_info.display_criteria
     criteria = out.manipR;
     [~,criteria_ind] = sort(criteria);
     name = strcat(filename,'_orient_sens');   
-  case DisplayCriteria.TENSION_SENSITIVITY    
+  case DisplayCriteria.TENSION_SENSITIVITY   
+    criteria = out.WS_perf;
+    [~,criteria_ind] = sort(criteria);
+    name = strcat(filename,'_tension_sens'); 
   case DisplayCriteria.MANIPULABILITY    
   case DisplayCriteria.MAX_TENSION
     criteria = max(out.tension_vector);
