@@ -60,7 +60,7 @@ classdef UnderActuatedVar
           obj.free_twist = obj.geometric_orthogonal*obj.pose_P_d(par.n_cables:end);
           obj.controlled_twist = obj.geometric_parallel*l_d;
       end
-      function obj = UpdateJacobiansD(obj,par,Ja_D,D_d)
+      function obj = UpdateJacobiansD(obj,par,Ja_D,D,D_d)
           J_P_d = par.permutation_matrix*Ja_D;
           obj.analitic_orthogonal_P_d = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',...
               J_P_d(1:par.n_cables,:)'*obj.analitic_orthogonal_P(1:par.n_cables,:)...
@@ -71,7 +71,7 @@ classdef UnderActuatedVar
           obj.analitic_parallel_P_d = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',...
               J_P_d(1:par.n_cables,:)'*obj.analitic_parallel_P(1:par.n_cables,:));zeros(par.pose_dim-par.n_cables,par.n_cables)];
           obj.analitic_parallel_d = par.permutation_matrix'*obj.analitic_parallel_P_d;
-          obj.geometric_parallel = D*obj.analitic_parallel_d+D_d*obj.analitic_parallel;
+          obj.geometric_parallel_d = D*obj.analitic_parallel_d+D_d*obj.analitic_parallel;
       end
 
     

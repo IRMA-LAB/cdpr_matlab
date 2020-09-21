@@ -1,0 +1,11 @@
+{
+  "tension_limits" : [[1.2],[25]],
+  "z_inferior_limit" : -1,
+  "workspace_type" : "REACHABLE",
+  "display_criteria" : "TENSION_SENSITIVITY",
+  "mesh_divider" : 21,
+  "display_grid_divider" : 10,
+  "delta_z_safe" : 0.5,
+  "visualize_cdpr": 0,
+  "l_error": 0
+}

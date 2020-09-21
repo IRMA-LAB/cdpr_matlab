@@ -19,4 +19,5 @@ for i=1:length(cdpr_v.cable)
   cdpr_v.cable(i) = UpdateCableFirstOrd(cdpr_p.cable(i),cdpr_v.platform,cdpr_v.cable(i));
 end
 cdpr_v = cdpr_v.UpdateJacobiansD();
+cdpr_v = cdpr_v.UpdateDMatrix_d();
 end

@@ -45,6 +45,7 @@ classdef PlatformVar
     H_mat_d;%is a matrix (size[3,3]), obtained by time differentiation of the matrix H_MAT.
     D_mat_d
     
+    C_mat
     mass_matrix_global_ss;%is the mass matrix(size[6,6]), expressed in the global frame. 
     ext_load_ss;%
     dyn_load_ss;%
@@ -220,6 +221,16 @@ classdef PlatformVar
     obj.mass_matrix_global(1:3,4:6) = -par.platform.mass.*anti_com;
     obj.mass_matrix_global(4:6,1:3) = par.platform.mass.*anti_com;
     obj.mass_matrix_global(4:6,4:6) = obj.inertia_matrix_global;
+  end
+  function obj = UpdateCoriolisMatrix(obj,par)
+        %UPDATEMASSMATRIX updates the mass matrix of the platform. 
+        %
+        %   PAR is a structure containing the inertial properties of the 
+        %   platform.
+    obj.C_mat = zeros(6,6);
+    obj.C_mat(1:3,4:6) = -par.platform.mass.*Anti(obj.angular_vel)*Anti(obj.pos_PG_glob);
+    obj.C_mat(4:6,4:6) = Anti(obj.angular_vel)*obj.inertia_matrix_global;
+    
   end
   function obj = UpdateMassMatrixStateSpace(obj,par)
         %UPDATEMASSMATRIX updates the state space mass matrix of the platform. 

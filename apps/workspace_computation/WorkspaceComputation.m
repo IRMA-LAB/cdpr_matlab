@@ -14,9 +14,9 @@ folder = '../../data';
 
 %workspace of grab underactuated prototype
 [cdpr_parameters, cdpr_variables, ~ ,cdpr_outputs,record,utilities] = ...
-LoadConfigAndInit("Grab_prototype_44","Grab_prototype_44");
+LoadConfigAndInit("Grab_prototype_33","Grab_prototype_33");
 
-ws_info = LoadWsInfo("Grab_prototype_44_WS_info");
+ws_info = LoadWsInfo("Grab_prototype_33_WS_info");
 
 cdpr_outputs = CalcWorkspace(cdpr_parameters,cdpr_variables,...
     utilities,cdpr_outputs,folder,record,ws_info);
