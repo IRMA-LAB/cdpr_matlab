@@ -17,7 +17,7 @@ cdpr_v.platform = cdpr_v.platform.UpdateMassMatrix(cdpr_p);
   M_matrix = CalcMassMatUnder(cdpr_v);
   [eigenvectors,eigenvalues_mat] = eig(K_ort,M_matrix);
 f = sqrt(diag(eigenvalues_mat))./(2*pi);
-  
+if (norm(imag(f))==0)    
 T_max = 2;
 % act_pose_0 = cdpr_p.underactuated_platform.permutation_matrix*pose;
 % free_pose_0 = act_pose_0(cdpr_p.n_cables+1:end);
@@ -74,5 +74,9 @@ end
 
 constr = -tau;
 constreq = 0;
+else
+   constr = 100000;
+   constreq = 0;
+end
 
 end

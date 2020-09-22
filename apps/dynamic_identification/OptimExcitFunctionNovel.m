@@ -1,4 +1,4 @@
-function val = OptimExcitFunctionNovel(cdpr_p,cdpr_v,ws_par,param,ut)
+function val = OptimExcitFunctionNovel(cdpr_p,cdpr_v,ws_par,param,ut,rec)
 
 l = param(1:cdpr_p.n_cables,1);
 in_cond = param(cdpr_p.n_cables+1:end,1);
@@ -55,8 +55,8 @@ W_hat = W-S(10,10).*U(:,10)*V(:,10)';
 sigma = S(10,10)/sqrt(length(W)-10);
 C = (sigma^2).*(1+norm(X(2:end)))*inv(W_hat(:,2:10)'*W_hat(:,2:10));
 sigma_perc = 100*sqrt(diag(C))./X(2:end);
-val = S(1,1)/S(9,9)+max(abs(sigma_perc))/min(abs(sigma_perc))+max(abs(sigma_perc))+1/S(9,9);
-%val = S(1,1)/S(9,9);
+%val = S(1,1)/S(9,9)+max(abs(sigma_perc))/min(abs(sigma_perc))+max(abs(sigma_perc))+1/S(9,9);
+val = S(1,1)/S(9,9)+1/S(9,9);
 if (isinf(val) || isnan(val))
     val = 1e56;
 end

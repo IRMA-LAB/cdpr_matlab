@@ -65,6 +65,8 @@ classdef UnderActuatedVar
           obj.analitic_orthogonal_P_d = [-linsolve(obj.analitic_jacobian_P(1:par.n_cables,:)',...
               J_P_d(1:par.n_cables,:)'*obj.analitic_orthogonal_P(1:par.n_cables,:)...
               +J_P_d(par.n_cables+1:end,:)');zeros(par.pose_dim-par.n_cables)];
+          
+          
           obj.analitic_orthogonal_d = par.permutation_matrix'*obj.analitic_orthogonal_P_d;
           obj.geometric_orthogonal_d = D*obj.analitic_orthogonal_d+D_d*obj.analitic_orthogonal;
           

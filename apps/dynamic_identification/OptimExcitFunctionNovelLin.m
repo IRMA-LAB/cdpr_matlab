@@ -1,4 +1,4 @@
-function val = OptimExcitFunctionNovelLin(cdpr_p,cdpr_v,ws_par,param,ut)
+function val = OptimExcitFunctionNovelLin(cdpr_p,cdpr_v,ws_par,param,ut,rec)
 
 l = param(1:cdpr_p.n_cables,1);
 in_cond = param(cdpr_p.n_cables+1:end,1);
@@ -20,7 +20,7 @@ for i=1:length(eigenvalues_mat)
     eigenvectors(:,i) = eigenvectors(:,i)./sqrt((eigenvectors(:,i)'*M_matrix*eigenvectors(:,i)));
 end
 f = sqrt(diag(eigenvalues_mat))./(2*pi);
-  
+if (norm(imag(f))==0)  
 T_max = 2;
 % act_pose_0 = cdpr_p.underactuated_platform.permutation_matrix*pose;
 % free_pose_0 = act_pose_0(cdpr_p.n_cables+1:end);
@@ -81,11 +81,14 @@ W_hat = W-S(10,10).*U(:,10)*V(:,10)';
 sigma = S(10,10)/sqrt(length(W)-10);
 C = (sigma^2).*(1+norm(X(2:end)))*inv(W_hat(:,2:10)'*W_hat(:,2:10));
 sigma_perc = 100*sqrt(diag(C))./X(2:end);
-val = S(1,1)/S(9,9)+max(abs(sigma_perc))/min(abs(sigma_perc))+max(abs(sigma_perc))+1/S(9,9);
-%val = S(1,1)/S(9,9)+1/S(9,9);
+%val = S(1,1)/S(9,9)+max(abs(sigma_perc))/min(abs(sigma_perc))+max(abs(sigma_perc))+1/S(9,9);
+val = S(1,1)/S(9,9)+1/S(9,9);
 %val = max(abs(sigma_perc))+max(abs(sigma_perc))/min(abs(sigma_perc));
 if (isinf(val) || isnan(val))
     val = 1e56;
+end
+else
+   val = 1e56;
 end
 
 end

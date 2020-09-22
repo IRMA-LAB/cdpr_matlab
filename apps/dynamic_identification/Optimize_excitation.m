@@ -13,29 +13,37 @@ folder = '../../data';
 
 %workspace of grab underactuated prototype
 [cdpr_parameters, cdpr_variables, ws_parameters ,cdpr_outputs,record,utilities] = ...
-LoadConfigAndInit("Grab_prototype_33","Grab_prototype_33");
+LoadConfigAndInit("Grab_prototype_44","Grab_prototype_44");
 
 [l0,zeta0] = FindCenter(cdpr_parameters,cdpr_variables,ws_parameters);
 
 ms = MultiStart('FunctionTolerance',1e-6,'XTolerance',1e-6,...
     'UseParallel',true);
-param0 = [l0;0;0;0];
+l0 = [0.948874485005648;1.740773458135074;2.102887067361541;1.462086065158142];
+cdpr_parameters.underactuated_platform.permutation_matrix =...
+    [0 0 1 0 0 0;
+    0 0 0 1 0 0;
+    0 0 0 0 1 0;
+    0 0 0 0 0 1;
+    1 0 0 0 0 0;
+    0 1 0 0 0 0];
+param0 = [l0;0.00;0.00];
 A = [];
 b = [];
 Aeq = [];
 beq = [];
-lb = [zeros(cdpr_parameters.n_cables,1);-pi;-pi;-pi];
+lb = [zeros(cdpr_parameters.n_cables,1);-0.1;-0.1];
 % ub = [10.*ones(cdpr_parameters.n_cables,1);dposef0;ddposef0];
-ub = [10.*ones(cdpr_parameters.n_cables,1);pi;pi;pi];
+ub = [10.*ones(cdpr_parameters.n_cables,1);0.1;0.1];
 problem = createOptimProblem('fmincon','x0',param0,...
     'Aeq',Aeq,'Aineq',A,'beq',beq,'bineq',b,'lb',lb,'ub',ub,'nonlcon',...
-    @(param)OptExtNonLinConstrNovelLin(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),...
-    'objective',@(param)OptimExcitFunctionNovelLin(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),...
+    @(param)OptExtNonLinConstrNovel(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),...
+    'objective',@(param)OptimExcitFunctionNovel(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),...
     'options',utilities.brutal_fmincon_options_nopar);
 %paramet = run(ms,problem,20);
-param0 = [1.557356989971975;1.310240806367134;1.401182007216357;0.325495685309497;0.544810687870450;0.086281458156127];
-paramet = fmincon(@(param)OptimExcitFunctionNovel(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),...
-    param0,A,b,Aeq,beq,lb,ub,@(param)OptExtNonLinConstrNovel(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),utilities.fmincon_options)
+%param0 = [1.557356989971975;1.310240806367134;1.401182007216357;0.325495685309497;0.544810687870450;0.086281458156127];
+paramet = fmincon(@(param)OptimExcitFunctionNovelLin(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities,record),...
+    param0,A,b,Aeq,beq,lb,ub,@(param)OptExtNonLinConstrNovelLin(cdpr_parameters,cdpr_variables,ws_parameters,param,utilities),utilities.fmincon_options)
 
 l = paramet(1:cdpr_parameters.n_cables,1);
 in_cond = paramet(cdpr_parameters.n_cables+1:end,1);

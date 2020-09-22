@@ -24,5 +24,5 @@ function cable_v = UpdateCableFirstOrd(cable_p,platform_v,cable_v)
   [cable_v.geometric_jacobian_col_d, cable_v.analitic_jacobian_col_d] = ...
     CalcPlatformJacobianColDerivatives(cable_v.vers_t,cable_v.vers_t_deriv,...
     cable_v.pos_PA_glob,platform_v.H_mat,platform_v.H_mat_d,platform_v.angular_vel);
-  
+  cable_v.analitic_jacobian_col_d=platform_v.D_mat_d'*cable_v.geometric_jacobian_col+platform_v.D_mat'*cable_v.geometric_jacobian_col_d;
 end
