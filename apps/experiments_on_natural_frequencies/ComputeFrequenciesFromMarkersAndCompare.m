@@ -9,6 +9,17 @@ marker_file_name = 'vicon_markers_';
 freq_file_name = 'vicon_data_f_';
 % dest_file_name = 'vicon_pose_';
 % dest_file_name2 = 'vicon_markers_';
+l = zeros(108,4);
+freq = l;
+for i=1:108
+   try
+       load(strcat(org_dir,'/',freq_file_name,num2str(i),'.mat'));
+       pose(i,:) = res.pose';
+       l(i,1:length(res.l)) = res.l';
+       freq(i,1:length(res.f)) = res.f';
+       
+   end
+end
 
 for i=1:108
     try

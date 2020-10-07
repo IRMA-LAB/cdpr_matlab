@@ -14,7 +14,7 @@ dest_file_name = 'vicon_data_f_';
 data_pose_file_name = 'vicon_pose_';
 
 [cdpr_parameters, cdpr_variables,~, cdpr_outputs,record,utilities] = ...
-  LoadConfigAndInit("Grab_prototype_22","NatFreqComp");
+  LoadConfigAndInit("Grab_prototype_44","NatFreqComp");
 cur_dir = cd(folder);
 aa=dir('*.mat');
 l = length(aa);
