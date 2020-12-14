@@ -13,6 +13,7 @@ load marker_pos_rel_to_ref
 
 
 options = optimoptions('lsqnonlin','MaxIterations',10000,'MaxFunctionEvaluations',10000,'OptimalityTolerance',1e-8,'FunctionTolerance',1e-8,'UseParallel',true);
+options = optimoptions2('lsqnonlin','MaxIterations',10000,'MaxFunctionEvaluations',10000,'OptimalityTolerance',1e-8,'FunctionTolerance',1e-8,'UseParallel',true);
 d_filt = designfilt('lowpassfir', ...
     'FilterOrder', 50,'PassBandFrequency', 4, 'StopBandFrequency',10,...
     'DesignMethod','equiripple','SampleRate',100);
