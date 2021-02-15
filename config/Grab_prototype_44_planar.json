@@ -1,0 +1,191 @@
+{
+  "motion_pattern" : "THREE_R_THREE_T",
+  "permutation_mask" : [1,2,3,4,5,6],
+  "actuator": [
+    {
+	  "active": true,
+	  "pulley": {
+	  "transmission_ratio": 0.001256637061436,
+	  "radius": 0,
+	  "pos_OD_glob": [
+        [0.4375],
+        [0],
+        [0.3500]
+      ],
+	  "vers_i": [
+       [1],
+       [0],
+       [0]
+      ],
+	  "vers_j": [
+        [0],
+        [0],
+        [1]
+      ],
+      "vers_k": [
+        [0],
+        [-1],
+        [0]
+      ]
+	  },
+      "winch": {
+	  "transmission_ratio": 1.061367391106653e-05,
+	  "l0": 1,
+      "pos_PA_loc": [
+        [0.04],
+        [0],
+        [0.04]
+      ]
+	  }
+    },
+	   {
+	  "active": true,
+	  "pulley": {
+	  "transmission_ratio": 0.001256637061436,
+	  "radius": 0,
+	  "pos_OD_glob": [
+        [0.4375],
+        [0],
+        [-0.3500]
+      ],
+	  "vers_i": [
+       [0],
+       [0],
+       [-1]
+      ],
+	  "vers_j": [
+        [1],
+        [0],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [-1],
+        [0]
+      ]
+	  },
+      "winch": {
+	  "transmission_ratio": 1.061367391106653e-05,
+	  "l0": 1,
+      "pos_PA_loc": [
+        [0.04],
+        [0],
+        [-0.04]
+      ]
+	  }
+    },
+   {
+	  "active": true,
+	  "pulley": {
+	  "transmission_ratio": 0.001256637061436,
+	  "radius": 0,
+	  "pos_OD_glob": [
+        [-0.4375],
+        [0],
+        [-0.3500]
+      ],
+	  "vers_i": [
+       [-1],
+       [0],
+       [0]
+      ],
+	  "vers_j": [
+        [0],
+        [0],
+        [-1]
+      ],
+      "vers_k": [
+        [0],
+        [-1],
+        [0]
+      ]
+	  },
+      "winch": {
+	  "transmission_ratio": 1.061367391106653e-05,
+	  "l0": 1,
+      "pos_PA_loc": [
+        [-0.04],
+        [0],
+        [-0.04]
+      ]
+	  }
+    },
+   {
+	  "active": true,
+	  "pulley": {
+	  "transmission_ratio": 0.001256637061436,
+	  "radius": 0,
+	  "pos_OD_glob": [
+        [-0.4375],
+        [0],
+        [0.3500]
+      ],
+	  "vers_i": [
+       [0],
+       [0],
+       [1]
+      ],
+	  "vers_j": [
+        [-1],
+        [0],
+        [0]
+      ],
+      "vers_k": [
+        [0],
+        [-1],
+        [0]
+      ]
+	  },
+      "winch": {
+	  "transmission_ratio": 1.061367391106653e-05,
+	  "l0": 1,
+      "pos_PA_loc": [
+        [-0.04],
+        [0],
+        [0.04]
+      ]
+	  }
+    }
+  ],
+  "platform": {
+    "ext_torque_loc": [
+      [0],
+      [0],
+      [0]
+    ],
+    "mass": 1,
+    "gravity_axis": [
+      [0],
+      [0],
+      [1]
+    ],
+    "inertia_mat_G_loc": [
+      [
+        0.1,
+    	0,	
+        0
+      ],
+      [
+        0,	
+        0.1,	
+        0
+      ],
+      [
+        0,	
+        0,	
+        0.1
+      ]
+    ],
+    "pos_PG_loc": [
+      [0],
+      [0],
+      [0]
+    ],
+    "ext_force_loc": [
+      [0],
+      [0],
+      [0]
+    ],
+    "rotation_parametrization": "TAIT_BRYAN"
+  }
+}

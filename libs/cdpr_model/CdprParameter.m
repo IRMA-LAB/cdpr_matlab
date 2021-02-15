@@ -79,7 +79,7 @@ classdef CdprParameter
                   obj.workspace_center = workspace_center./obj.n_cables;
                   obj.workspace_center(3) = 0;
               elseif(obj.n_cables>obj.pose_dim)
-                  obj.underactuated_platform = OverActuatedPar(obj.n_cables,obj.pose_dim);
+                  obj.overactuated_platform = OverActuatedPar(obj.n_cables,obj.pose_dim);
                   obj.workspace_center = workspace_center./obj.n_cables;
               end
           end   

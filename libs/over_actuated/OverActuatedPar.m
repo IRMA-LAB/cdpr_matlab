@@ -14,7 +14,7 @@ classdef OverActuatedPar
         
     end
     methods
-        function obj = UnderActuatedPar(n,n_p)
+        function obj = OverActuatedPar(n,n_p)
             obj.n_cables = n;
             obj.pose_dim = n_p;
         end
