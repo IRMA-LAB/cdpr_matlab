@@ -37,7 +37,7 @@ classdef CdprParameter
               end
               j=j+1;
           end
-          obj.platform = PlatformParameters(p.platform);
+          obj.platform = PlatformParameters(p.platform, p.rotation_parametrization);
           
           obj.n_cables = length(p.actuator);
           obj.motion_pattern = p.motion_pattern;
@@ -66,7 +66,7 @@ classdef CdprParameter
           end
           if (obj.platform.rotation_parametrization ==  RotationParametrizations.QUATERNION)
               if (obj.n_cables<obj.pose_dim-1)
-                  obj.underactuated_platform = UnderActuatedPar(obj.n_cables,obj.pose_dim,p.permutation_mask);
+                  obj.underactuated_platform = UnderActuatedPar(obj.n_cables, obj.pose_dim, p.controlled_vars_mask);
                   obj.workspace_center = workspace_center./obj.n_cables;
                   obj.workspace_center(3) = 0;
               elseif(obj.n_cables>obj.pose_dim-1)
@@ -75,7 +75,7 @@ classdef CdprParameter
               end
           else
               if (obj.n_cables<obj.pose_dim)
-                  obj.underactuated_platform = UnderActuatedPar(obj.n_cables,obj.pose_dim,p.permutation_mask);
+                  obj.underactuated_platform = UnderActuatedPar(obj.n_cables, obj.pose_dim, p.controlled_vars_mask);
                   obj.workspace_center = workspace_center./obj.n_cables;
                   obj.workspace_center(3) = 0;
               elseif(obj.n_cables>obj.pose_dim)

@@ -22,7 +22,7 @@ classdef PlatformParameters
     
   end
   methods 
-    function obj = PlatformParameters(platform_parameters_struct)
+    function obj = PlatformParameters(platform_parameters_struct, rotation_parametrization)
 %   PLATFORMPARAMETERS instantiates an object of PlatformParameters type.
 %   PLATFORM_PARAMETERS_STRUCT is a structure containing the platform
 %   parameters, arranged in different fields. 
@@ -37,7 +37,7 @@ classdef PlatformParameters
      
       obj.ext_force_glob = platform_parameters_struct.ext_force_loc;
       obj.ext_torque_glob = platform_parameters_struct.ext_torque_loc;
-      obj.rotation_parametrization = platform_parameters_struct.rotation_parametrization;
+      obj.rotation_parametrization = rotation_parametrization;
     end
   end
 end

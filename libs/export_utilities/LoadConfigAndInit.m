@@ -1,12 +1,12 @@
 function [parameters,variables, ws_data,outputs,record,utilities] = ...
-    LoadConfigAndInit(config_name,simulation_title)
+    LoadConfigAndInit(config_filepath,simulation_title)
 %LOADCONFIGANDINIT performs basic initializations of the cdpr simulation.
 %   LOADCONFIGANDINIT needs the name of a .json configuration file in
 %   string form and a string containing the name of the simulation to be
 %   performed. It performs initialization of each class needed for a cdpr
 %   simulation and outputs them.
 %
-%   CONFIG_NAME is a string containing the name of a .json config file.
+%   CONFIG_FILEPATH is a string containing the path of a .json config file.
 %   SIMULATION_TITLE is a string containing the name of the simulation which
 %   will be used in the graphical output of the process.
 %
@@ -18,10 +18,7 @@ function [parameters,variables, ws_data,outputs,record,utilities] = ...
 %   UTILITIES are objects containing various facilities for numerical
 %   resolution, logging, timing, etc...
 
-
-
-
-parameters = CdprParameter(strcat(config_name,'.json'));
+parameters = CdprParameter(strcat(config_filepath, '.json'));
 variables = CdprVar(parameters.n_cables,parameters.pose_dim);
 
 outputFieldsPlatform = fieldnames(variables.platform);
@@ -38,11 +35,13 @@ for j = 1:n_elem
     end
 end
 outputs.index = [];
-record = RecordType(parameters,simulation_title,config_name);
+temp_split = split(config_filepath, '/');
+config_filename = temp_split{end};
+record = RecordType(parameters,simulation_title, config_filename);
 try
-    wp_name = strcat(config_name,'_WS.mat');
+    wp_name = strcat(config_filename, '_WS.mat');
     load(wp_name);
-    record = record.ResetFigureLimits(ws_data.limits,8);
+    record = record.ResetFigureLimits(ws_data.limits, 8);
 catch
     ws_data = [];
 end
