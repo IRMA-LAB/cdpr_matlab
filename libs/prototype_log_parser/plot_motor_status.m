@@ -1,7 +1,7 @@
 clc; clear; close all;
 
 %% Parse file
-filepath = '/tmp/cable-robot-logs/data.log';
+filepath = '/tmp/laser-engraver-logs/data.log';
 data = parseCableRobotLogFile(filepath);
 
 %% Pack according to actuator ID

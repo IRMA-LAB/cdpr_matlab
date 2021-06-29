@@ -6,6 +6,7 @@ classdef ActuatorStatus < handle
         motor_speed
         motor_torque
         cable_length
+        cable_tension
         aux_position
         state
         pulley_angle
@@ -19,9 +20,10 @@ classdef ActuatorStatus < handle
             obj.motor_speed = actuator_status_packed(4);
             obj.motor_torque = actuator_status_packed(5);
             obj.cable_length = actuator_status_packed(6);
-            obj.aux_position = actuator_status_packed(7);
-            obj.state = actuator_status_packed(8);
-            obj.pulley_angle = actuator_status_packed(9);
+            obj.cable_tension = actuator_status_packed(7);
+            obj.aux_position = actuator_status_packed(8);
+            obj.state = actuator_status_packed(9);
+            obj.pulley_angle = actuator_status_packed(10);
         end
         
         function append(obj, actuator_status_packed)
@@ -31,9 +33,10 @@ classdef ActuatorStatus < handle
             obj.motor_speed(end + 1) = actuator_status_packed(4);
             obj.motor_torque(end + 1) = actuator_status_packed(5);
             obj.cable_length(end + 1) = actuator_status_packed(6);
-            obj.aux_position(end + 1) = actuator_status_packed(7);
-            obj.state(end + 1) = actuator_status_packed(8);
-            obj.pulley_angle(end + 1) = actuator_status_packed(9);
+            obj.cable_tension(end + 1) = actuator_status_packed(7);
+            obj.aux_position(end + 1) = actuator_status_packed(8);
+            obj.state(end + 1) = actuator_status_packed(9);
+            obj.pulley_angle(end + 1) = actuator_status_packed(10);
         end        
         
         function clear(obj)
@@ -43,6 +46,7 @@ classdef ActuatorStatus < handle
             obj.motor_speed = [];
             obj.motor_torque = [];
             obj.cable_length = [];
+            obj.cable_tension = [];
             obj.aux_position = [];
             obj.pulley_angle = [];
             obj.state = [];

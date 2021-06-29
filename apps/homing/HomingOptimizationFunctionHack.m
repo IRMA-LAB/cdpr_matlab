@@ -1,0 +1,44 @@
+function [vector,matrix] = HomingOptimizationFunctionHack(cdpr_p,record,dl,ds,v)
+
+dim = length(dl);
+cdpr_v = CdprVar(cdpr_p.n_cables,cdpr_p.pose_dim);
+
+equations4stage = cdpr_p.n_cables+6;
+vector = zeros(dim*equations4stage,1);
+matrix = zeros(dim*equations4stage,length(v));
+l_constraint = zeros(cdpr_p.n_cables,1);
+sw_constraint = l_constraint;
+for j = 1:dim
+    
+    pose = v(2*cdpr_p.n_cables+cdpr_p.pose_dim*(j-1)+1:2*cdpr_p.n_cables+j*cdpr_p.pose_dim,1);
+    cdpr_v = UpdateIKZeroOrd(pose(1:3,1),pose(4:end,1),cdpr_p,cdpr_v);
+    cdpr_v = CalcExternalLoads(cdpr_v,cdpr_p);
+    cdpr_v.underactuated_platform =...
+    cdpr_v.underactuated_platform.UpdateStatics(cdpr_p.underactuated_platform,...
+    cdpr_v.analitic_jacobian,cdpr_v.D_mat,cdpr_v.platform.ext_load);
+    [cdpr_v.tension_vector,gs_constraint] = cdpr_v.underactuated_platform.CalcStaticTension(cdpr_p.underactuated_platform);
+    
+    for i=1:cdpr_p.n_cables
+        l_constraint(i) = 100.*(cdpr_v.cable(i).complete_length-(v(i)+dl(j,i)));
+        sw_constraint(i) = (cdpr_v.cable(i).swivel_ang-(v(i+cdpr_p.n_cables)+ds(j,i)));
+    end
+    
+%     gs_constraint = 100.*gs_constraint;
+    l_jacobian = 100.*CalcJacobianL(cdpr_v);
+    sw_jacobian = CalcJacobianSw(cdpr_v);
+    gs_jacobian = CalcJacobianGs(cdpr_v);
+    constr_vect = [l_constraint;sw_constraint;gs_constraint];
+    constr_jac = [l_jacobian;sw_jacobian;gs_jacobian];
+    
+    vector((j-1)*equations4stage+1:j*equations4stage,1) = constr_vect;
+    matrix((j-1)*equations4stage+1:(j-1)*equations4stage+2*cdpr_p.n_cables,1:2*cdpr_p.n_cables) = -eye(2*cdpr_p.n_cables);
+    matrix((j-1)*equations4stage+1:(j-1)*equations4stage+cdpr_p.n_cables,1:cdpr_p.n_cables) = 100.* matrix((j-1)*equations4stage+1:(j-1)*equations4stage+cdpr_p.n_cables,1:cdpr_p.n_cables);
+
+    matrix((j-1)*equations4stage+1:j*equations4stage,2*cdpr_p.n_cables+cdpr_p.pose_dim*(j-1)+1:2*cdpr_p.n_cables+j*cdpr_p.pose_dim) = constr_jac;
+    
+    if (j==1)
+        record.SetFrame(cdpr_v,cdpr_p);
+    end
+end
+
+end

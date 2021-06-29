@@ -6,6 +6,7 @@ classdef WinchStatus < handle
         motor_speed
         motor_torque
         cable_length
+        cable_tension
         aux_position
     end
     
@@ -17,7 +18,8 @@ classdef WinchStatus < handle
             obj.motor_speed = winch_status_packed(4);
             obj.motor_torque = winch_status_packed(5);
             obj.cable_length = winch_status_packed(6);
-            obj.aux_position = winch_status_packed(7);
+            obj.cable_tension = winch_status_packed(7);
+            obj.aux_position = winch_status_packed(8);
         end
         
         function append(obj, winch_status_packed)
@@ -27,7 +29,8 @@ classdef WinchStatus < handle
             obj.motor_speed(end + 1) = winch_status_packed(4);
             obj.motor_torque(end + 1) = winch_status_packed(5);
             obj.cable_length(end + 1) = winch_status_packed(6);
-            obj.aux_position(end + 1) = winch_status_packed(7);
+            obj.cable_tension(end + 1) = winch_status_packed(7);
+            obj.aux_position(end + 1) = winch_status_packed(8);
         end        
         
         function clear(obj)
@@ -37,6 +40,7 @@ classdef WinchStatus < handle
             obj.motor_speed = [];
             obj.motor_torque = [];
             obj.cable_length = [];
+            obj.cable_tension = [];
             obj.aux_position = [];
         end
     end

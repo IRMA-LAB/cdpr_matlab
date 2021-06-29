@@ -52,5 +52,4 @@ j_struct.init_pose = pose0';
 cd ../../data
 json.startup
 json.write(j_struct, 'homing_results.json')
-fprintf('Results dumped in %s\n', strcat(pwd, '/results.json'))
-
+fprintf('Results dumped in %s\n', strcat(pwd, '/homing_results.json'))
